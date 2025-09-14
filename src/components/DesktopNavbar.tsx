@@ -1,6 +1,6 @@
 import ModeToggole from "@/components/ModeToggole";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import { Bell, House, User } from "lucide-react";
+import { BellIcon, House, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
@@ -18,13 +18,13 @@ const DesktopNavbar = () => {
       <SignedIn>
         <Link href="/">
           <div className="flex items-center transition-all duration-200 gap-1 text-sm hover:text-blue-600 ">
-            <Bell className="w-4" />
+            <BellIcon className="w-4" />
             <span>Notification</span>
           </div>
         </Link>
         <Link href="/">
           <div className="flex items-center transition-all duration-200 gap-1 text-sm hover:text-blue-600 ">
-            <User className="w-4" />
+            <UserIcon className="w-4" />
             <span>Profile</span>
           </div>
         </Link>
