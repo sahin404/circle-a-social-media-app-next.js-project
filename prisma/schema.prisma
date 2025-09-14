@@ -36,7 +36,7 @@ model User {
   following Follow[] @relation("follower")
 
   notificationsRecieved Notification[] @relation("userNotifications")
-  notificationSend Notification[]  @relation("notificationsCreator"))
+  notificationSend      Notification[] @relation("notificationsCreator")
 }
 
 model Post {
@@ -64,7 +64,7 @@ model Like {
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([authorId, postId]) //prevent same user multiple likes
-  @@index([authorId, postId])
+  @@index([authorId, postId]) //optimized search query
 }
 
 model Comment {
@@ -78,5 +78,15 @@ model Comment {
   author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
   post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-  @@index([authorId, postId])
+  @@index([authorId, postId]) //optimized search query
+}
+
+model Follow {
+  followerId  String
+  FollowingId String
+  createdAt   DateTime @default(now())
+  // Relations
+
+  follower User @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
 }
