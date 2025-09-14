@@ -9,7 +9,7 @@ const DesktopNavbar = () => {
     <div className="hidden lg:flex gap-10 items-center ">
       <ModeToggole></ModeToggole>
       <Link href="/">
-        <div className="flex items-center gap-1 text-sm">
+        <div className="flex items-center transition-all duration-200 gap-1 text-sm hover:text-blue-600 ">
           <House className="w-4" />
           <span>Home</span>
         </div>
@@ -17,13 +17,13 @@ const DesktopNavbar = () => {
       {/* If signed In then notification and profile will be show */}
       <SignedIn>
         <Link href="/">
-          <div className="flex items-center gap-1 text-sm">
+          <div className="flex items-center transition-all duration-200 gap-1 text-sm hover:text-blue-600 ">
             <Bell className="w-4" />
             <span>Notification</span>
           </div>
         </Link>
         <Link href="/">
-          <div className="flex items-center gap-1 text-sm">
+          <div className="flex items-center transition-all duration-200 gap-1 text-sm hover:text-blue-600 ">
             <User className="w-4" />
             <span>Profile</span>
           </div>
