@@ -1,29 +1,21 @@
-"use client";
-
-import Link from "next/link";
 import DesktopNavbar from "./DesktopNavbar";
+import Logo from "@/components/Logo";
 import MobileNavbar from "./MobileNavbar";
-import Image from "next/image";
-import white from "@/assests/white.png";
-import black from "@/assests/black.png";
-import { useTheme } from "next-themes";
+import { currentUser } from "@clerk/nextjs/server";
+import { syncUser } from "@/actions/user.actions";
 
-const Navbar = () => {
-  const { theme } = useTheme();
 
+const Navbar = async() => {
+  const user = await currentUser();
+  if(user){
+    await syncUser();
+  }
   return (
     <nav className="sticky top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between h-16 px-4">
           {/* logo */}
-          <Link href="/">
-            <Image
-              src={theme === "dark" ? white : black}
-              width={120}
-              height={40}
-              alt="Circle Logo"
-            ></Image>
-          </Link>
+          <Logo></Logo>
 
           <DesktopNavbar></DesktopNavbar>
           <MobileNavbar></MobileNavbar>
