@@ -6,6 +6,8 @@ import {
   UserButton,
 } from '@clerk/nextjs'
 
+import ModeToggole from '@/components/ModeToggole';
+
 export default function Home() {
   return (
     <div>
@@ -24,6 +26,9 @@ export default function Home() {
           <UserButton/>
         </SignedIn>
       </header>
+      <div>
+        <ModeToggole></ModeToggole>
+      </div>
     </div>
   );
 }
