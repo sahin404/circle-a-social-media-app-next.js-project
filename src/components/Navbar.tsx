@@ -16,12 +16,14 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between h-16 px-4">
           {/* logo */}
-          <Image
-            src={theme === "dark" ? white : black}
-            width={120}
-            height={40}
-            alt="Circle Logo"
-          ></Image>
+          <Link href="/">
+            <Image
+              src={theme === "dark" ? white : black}
+              width={120}
+              height={40}
+              alt="Circle Logo"
+            ></Image>
+          </Link>
 
           <DesktopNavbar></DesktopNavbar>
           <MobileNavbar></MobileNavbar>

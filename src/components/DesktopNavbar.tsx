@@ -1,7 +1,47 @@
+import ModeToggole from "@/components/ModeToggole";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { Bell, House, User } from "lucide-react";
+import Link from "next/link";
+import { Button } from "./ui/button";
+
 const DesktopNavbar = () => {
   return (
-    <div>DesktopNavbar</div>
-  )
-}
+    <div className="hidden lg:flex gap-10 items-center ">
+      <ModeToggole></ModeToggole>
+      <Link href="/">
+        <div className="flex items-center gap-1 text-sm">
+          <House className="w-4" />
+          <span>Home</span>
+        </div>
+      </Link>
+      {/* If signed In then notification and profile will be show */}
+      <SignedIn>
+        <Link href="/">
+          <div className="flex items-center gap-1 text-sm">
+            <Bell className="w-4" />
+            <span>Notification</span>
+          </div>
+        </Link>
+        <Link href="/">
+          <div className="flex items-center gap-1 text-sm">
+            <User className="w-4" />
+            <span>Profile</span>
+          </div>
+        </Link>
+      </SignedIn>
 
-export default DesktopNavbar
+      <div>
+        <SignedOut>
+          <SignInButton>
+            <Button>Login</Button>
+          </SignInButton>
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+      </div>
+    </div>
+  );
+};
+
+export default DesktopNavbar;
