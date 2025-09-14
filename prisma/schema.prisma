@@ -14,11 +14,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id        String    @id @default(cuid())
-  email     String    @unique
-  username  String    @unique
-  clerkId   String    @unique
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String   @unique
+  clerkId   String   @unique
   name      String?
   image     String?
   bio       String?
@@ -28,8 +28,8 @@ model User{
   updatedAt DateTime @updatedAt
 
   // Relational
-  posts Post[] //one to many means one user but can be more posts
-  likes Like[] //one to many
+  posts    Post[] //one to many means one user but can be more posts
+  likes    Like[] //one to many
   comments Comment[] // one to many
 
   followers Follow[] @relation("following")
@@ -37,5 +37,46 @@ model User{
 
   notificationsRecieved Notification[] @relation("userNotifications")
   notificationSend Notification[]  @relation("notificationsCreator"))
+}
 
+model Post {
+  id        String   @id @default(cuid())
+  content   String?
+  Image     String?
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relational
+  likes        Like[]
+  comments     Comment[]
+  notification Notification[]
+  author       User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  authorId  String
+  postId    String
+  createdAt DateTime @default(now())
+  // Relation
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([authorId, postId]) //prevent same user multiple likes
+  @@index([authorId, postId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  authorId  String
+  postId    String
+  content   String
+  createdAt DateTime @default(now())
+  // relations
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([authorId, postId])
 }
