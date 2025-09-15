@@ -35,46 +35,85 @@ export const syncUser = async () => {
     });
 
     return dbUser;
-  } catch(err) {
+  } catch (err) {
     console.log("Error in syncUser: ", err);
   }
 };
 
-
 //Data fetching for sidebar
-export const getUserByClerkId = async(clerkId:string)=>{
-  try{
+export const getUserByClerkId = async (clerkId: string) => {
+  try {
     const user = await prisma.user.findUnique({
-      where:{
-        clerkId
+      where: {
+        clerkId,
       },
       //joint other tables
-      include:{
-        _count:{
-          select:{
-            followers:true,
+      include: {
+        _count: {
+          select: {
+            followers: true,
             following: true,
-            posts:true
-          }
-        }
-      }
-    })
+            posts: true,
+          },
+        },
+      },
+    });
 
-    if(!user) return null;
+    if (!user) return null;
     return user;
-  }
-  catch(err){
+  } catch (err) {
     console.log("Error occured to fetch user data using clerkId, ", err);
   }
-  
-}
+};
 
+export const getUserIdFromDb = async () => {
+  const { userId: clerkId } = await auth();
+  if (!clerkId) return null;
+  const user = await getUserByClerkId(clerkId);
+  if (!user) throw new Error("User Not Found!");
+  return user.id;
+};
 
-export const getUserIdFromDb = async()=>{
-  const {userId: clerkId} = await auth();
-  if(!clerkId) return null;
-  const user =  await getUserByClerkId(clerkId);
-  if(!user) throw new Error('User Not Found!');
-  return user.id;   
-
-}
+// Get Random 3 user from database
+export const getRandomUsers = async () => {
+  try {
+    const myId = await getUserIdFromDb();
+    if (!myId) return [];
+    const randomUsers = await prisma.user.findMany({
+      where: {
+        AND: [
+          {
+            NOT: {
+              id: myId,
+            },
+          },
+          {
+            NOT: {
+              followers: {
+                some: {
+                  followerId: myId,
+                },
+              },
+            },
+          },
+        ],
+      },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        image: true,
+        _count: {
+          select: {
+            followers: true,
+          },
+        },
+      },
+      take: 3,
+    });
+    return randomUsers;
+  } catch (err) {
+    console.log("An error occured to get random users", err);
+    return [];
+  }
+};

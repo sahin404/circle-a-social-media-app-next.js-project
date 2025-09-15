@@ -1,4 +1,5 @@
 import CreatePost from "@/components/CreatePost";
+import YouMayFollow from "@/components/YouMayFollow";
 
 export default function Home() {
   return (
@@ -11,7 +12,7 @@ export default function Home() {
           </div>
         </div>
         <div className="sticky top-20 lg:block hidden lg:col-span-4 ">
-          to follow  section
+          <YouMayFollow/>
         </div>
 
       </div>
