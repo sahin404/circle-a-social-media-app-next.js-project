@@ -9,7 +9,7 @@ const Sidebar = async () => {
   const dbUser = await getUserByClerkId(user.id);
 
   if (!dbUser) return <UnAuthenticatedSidebar />;
-
+  console.log(dbUser);
   return <div>{dbUser.name}</div>;
 };
 

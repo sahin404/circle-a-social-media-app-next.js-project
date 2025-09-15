@@ -45,8 +45,19 @@ export const getUserByClerkId = async(clerkId:string)=>{
     const user = await prisma.user.findUnique({
       where:{
         clerkId
+      },
+      //joint other tables
+      include:{
+        _count:{
+          select:{
+            followers:true,
+            following: true,
+            posts:true
+          }
+        }
       }
     })
+
     if(!user) return null;
     return user;
   }
