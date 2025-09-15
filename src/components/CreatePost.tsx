@@ -5,7 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { Textarea } from "./ui/textarea";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
-import { ImageIcon, Send } from "lucide-react";
+import { ImageIcon, Loader2Icon, Send } from "lucide-react";
 import { useState } from "react";
 import { postContent } from "@/actions/post.actions";
 import toast from "react-hot-toast";
@@ -31,11 +31,10 @@ const CreatePost = () => {
         toast.success("Successfully Created A Post!");
       }
     } catch (err) {
-        toast.error("An Error occured to create post!");
-        console.log("An error ocurred to create post!", err);
+      toast.error("An Error occured to create post!");
+      console.log("An error ocurred to create post!", err);
     } finally {
-        setIsPosting(false);
-        
+      setIsPosting(false);
     }
   };
 
@@ -88,10 +87,17 @@ const CreatePost = () => {
               variant="secondary"
               onClick={handleSubmit}
             >
-              <div className="flex items-center gap-2">
-                <Send />
-                Post
-              </div>
+              {isPosting ? (
+                <>
+                  <Loader2Icon className="size-4 mr-2 animate-spin" />
+                  Posting...
+                </>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Send />
+                  Post
+                </div>
+              )}
             </Button>
           </div>
         </div>
