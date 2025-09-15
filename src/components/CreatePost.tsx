@@ -7,6 +7,8 @@ import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import { ImageIcon, Send } from "lucide-react";
 import { useState } from "react";
+import { postContent } from "@/actions/post.actions";
+import toast from "react-hot-toast";
 
 const CreatePost = () => {
   const { user } = useUser();
@@ -15,6 +17,27 @@ const CreatePost = () => {
   const [imageLink, setImageLink] = useState("");
   const [isPosting, setIsPosting] = useState(false);
   const [showImageUpload, setShowImageUpload] = useState(false);
+
+  //handle submit
+  const handleSubmit = async () => {
+    setIsPosting(true);
+    try {
+      const toPost = await postContent(content, imageLink);
+      if (toPost?.success) {
+        //posted Successsfully
+        // so reset
+        setContent("");
+        setImageLink("");
+        toast.success("Successfully Created A Post!");
+      }
+    } catch (err) {
+        toast.error("An Error occured to create post!");
+        console.log("An error ocurred to create post!", err);
+    } finally {
+        setIsPosting(false);
+        
+    }
+  };
 
   return (
     <div>
@@ -43,7 +66,6 @@ const CreatePost = () => {
         <Separator></Separator>
         {/* Image and Button Section */}
         <div className="py-4 px-2 flex items-center justify-between">
-          
           {/* TODO image uploading function */}
           {/* Left Button */}
           <div>
@@ -61,8 +83,11 @@ const CreatePost = () => {
           </div>
           {/* Right Button */}
           <div>
-           
-            <Button  disabled = {(!content.trim() && !imageLink) || isPosting} variant="secondary">
+            <Button
+              disabled={(!content.trim() && !imageLink) || isPosting}
+              variant="secondary"
+              onClick={handleSubmit}
+            >
               <div className="flex items-center gap-2">
                 <Send />
                 Post
