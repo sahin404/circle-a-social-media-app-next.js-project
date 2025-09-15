@@ -1,8 +1,17 @@
 import { getUserByClerkId } from "@/actions/user.actions";
 import { currentUser } from "@clerk/nextjs/server";
 import UnAuthenticatedSidebar from "./UnAuthenticatedSidebar";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
-
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import Image from "next/image";
+import { Separator } from "./ui/separator";
+import { Link, MapPin } from "lucide-react";
 
 const Sidebar = async () => {
   const user = await currentUser();
@@ -15,16 +24,51 @@ const Sidebar = async () => {
   return (
     <div>
       <Card>
-        <CardHeader>
-          <CardTitle>Card Title</CardTitle>
-          <CardDescription>Card Description</CardDescription>
-          
+        <CardHeader className="flex items-center justify-center space-y-5">
+          <Image
+            className="rounded-full"
+            width={100}
+            height={100}
+            src={dbUser?.image || "avatar.jpg"}
+            alt="Profile Picture"
+          />
+          <div className="space-y-1 text-center">
+            <CardTitle>{dbUser.name}</CardTitle>
+            <CardDescription>{dbUser.username}</CardDescription>
+            <CardDescription className="text-md">{dbUser.bio}</CardDescription>
+          </div>
         </CardHeader>
+        <div className="-mt-2">
+          <Separator></Separator>
+        </div>
+        {/* Following and Followers */}
         <CardContent>
-          <p>Card Content</p>
+          <div className="flex justify-between py-4">
+            <div className="flex flex-col items-center justify-center">
+              <span>{dbUser._count.following}</span>
+              <span>Following</span>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <span>{dbUser._count.followers}</span>
+              <span>Followers</span>
+            </div>
+          </div>
         </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
+        <div className="-mt-2">
+          <Separator></Separator>
+        </div>
+        {/* Location and Links */}
+        <CardFooter className="mt-5 flex flex-col items-start">
+          <div className="space-y-3 text-md">
+            <div className="flex items-center gap-1">
+              <MapPin className="h-5" />
+              <span>{dbUser.location || "No Location"}</span>
+            </div>
+            <div className="flex items-center gap-1">
+               <Link className="h-5" />
+              <span>{dbUser.website || "No Website"}</span>
+            </div>
+          </div>
         </CardFooter>
       </Card>
     </div>
