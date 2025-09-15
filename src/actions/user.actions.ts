@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { auth, currentUser } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 
 //save user from clerk to database
 export const syncUser = async () => {
@@ -118,59 +119,55 @@ export const getRandomUsers = async () => {
   }
 };
 
-
-// Toggoling the follow 
-export const toggoleFollow = async(targetId:string)=>{
-  try{
+// Toggoling the follow
+export const toggoleFollow = async (targetId: string) => {
+  try {
     const myId = await getUserIdFromDb();
-    if(!myId) return null;
-    
-    if(myId === targetId) throw new Error("You cant follow yourself");
+    if (!myId) return null;
+
+    if (myId === targetId) throw new Error("You cant follow yourself");
 
     const existance = await prisma.follow.findUnique({
-      where:{
-        followerId_followingId:{
-          followerId:myId,
-          followingId:targetId
-        }
-      }
-    })
-    if(!existance){
+      where: {
+        followerId_followingId: {
+          followerId: myId,
+          followingId: targetId,
+        },
+      },
+    });
+    if (!existance) {
       //follow
       await prisma.$transaction([
         // create Notification
         prisma.notification.create({
-          data:{
-            userId:targetId,
-            creatorId:myId,
-            type:"FOLLOW"
-          }
+          data: {
+            userId: targetId,
+            creatorId: myId,
+            type: "FOLLOW",
+          },
         }),
 
         //following
         prisma.follow.create({
-          data:{
-            followerId:myId,
-            followingId:targetId
-          }
-        })
-      ])
-
-    }
-    else{
+          data: {
+            followerId: myId,
+            followingId: targetId,
+          },
+        }),
+      ]);
+    } else {
       //unfollow
       await prisma.follow.delete({
-        where:{
-           followerId_followingId:{
-          followerId:myId,
-          followingId:targetId
-        }
-        }
-      })
+        where: {
+          followerId_followingId: {
+            followerId: myId,
+            followingId: targetId,
+          },
+        },
+      });
     }
-  
+    revalidatePath("/");
+  } catch (err) {
+    console.log("An error occured to toggole follow", err);
   }
-  catch(err){
-    console.log('An error occured to toggole follow', err);
-  }
-}
+};
