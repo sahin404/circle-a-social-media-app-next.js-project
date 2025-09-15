@@ -117,3 +117,60 @@ export const getRandomUsers = async () => {
     return [];
   }
 };
+
+
+// Toggoling the follow 
+export const toggoleFollow = async(targetId:string){
+  try{
+    const myId = await getUserIdFromDb();
+    if(!myId) return null;
+    
+    if(myId === targetId) throw new Error("You cant follow yourself");
+
+    const existance = await prisma.follow.findUnique({
+      where:{
+        followerId_followingId:{
+          followerId:myId,
+          followingId:targetId
+        }
+      }
+    })
+    if(!existance){
+      //follow
+      await prisma.$transaction([
+        // create Notification
+        prisma.notification.create({
+          data:{
+            userId:targetId,
+            creatorId:myId,
+            type:"FOLLOW"
+          }
+        }),
+
+        //following
+        prisma.follow.create({
+          data:{
+            followerId:myId,
+            followingId:targetId
+          }
+        })
+      ])
+
+    }
+    else{
+      //unfollow
+      await prisma.follow.delete({
+        where:{
+           followerId_followingId:{
+          followerId:myId,
+          followingId:targetId
+        }
+        }
+      })
+    }
+  
+  }
+  catch(err){
+
+  }
+}
