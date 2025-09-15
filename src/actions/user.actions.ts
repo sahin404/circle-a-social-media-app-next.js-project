@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import { auth, currentUser } from "@clerk/nextjs/server";
 
+//save user from clerk to database
 export const syncUser = async () => {
   try {
     const { userId } = await auth();
@@ -40,6 +41,7 @@ export const syncUser = async () => {
 };
 
 
+//Data fetching for sidebar
 export const getUserByClerkId = async(clerkId:string)=>{
   try{
     const user = await prisma.user.findUnique({
