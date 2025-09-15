@@ -38,3 +38,20 @@ export const syncUser = async () => {
     console.log("Error in syncUser: ", err);
   }
 };
+
+
+export const getUserByClerkId = async(clerkId:string)=>{
+  try{
+    const user = await prisma.user.findUnique({
+      where:{
+        clerkId
+      }
+    })
+    if(!user) return null;
+    return user;
+  }
+  catch(err){
+    console.log("Error occured to fetch user data using clerkId, ", err);
+  }
+  
+}
