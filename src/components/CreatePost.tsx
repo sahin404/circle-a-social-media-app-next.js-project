@@ -5,7 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { Textarea } from "./ui/textarea";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, Send } from "lucide-react";
 import { useState } from "react";
 
 const CreatePost = () => {
@@ -40,9 +40,9 @@ const CreatePost = () => {
 
         <Separator></Separator>
         {/* Image and Button Section */}
-        <div className="py-4 px-2">
+        <div className="py-4 px-2 flex items-center justify-between">
           {/* Left Button */}
-          <div >
+          <div>
             <Button
               type="button"
               variant="ghost"
@@ -57,7 +57,12 @@ const CreatePost = () => {
           </div>
           {/* Right Button */}
           <div>
-            
+            <Button variant="secondary">
+              <div className="flex items-center gap-2">
+                <Send />
+                Post
+              </div>
+            </Button>
           </div>
         </div>
       </Card>
