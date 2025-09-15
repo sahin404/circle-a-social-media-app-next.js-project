@@ -32,6 +32,8 @@ const CreatePost = () => {
           </div>
           <div className="w-full">
             <Textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               className="min-h-[100px] resize-none p-0 border-none text-base focus-visible:ring-0"
               placeholder="What's on your mind?"
             />
@@ -41,6 +43,8 @@ const CreatePost = () => {
         <Separator></Separator>
         {/* Image and Button Section */}
         <div className="py-4 px-2 flex items-center justify-between">
+          
+          {/* TODO image uploading function */}
           {/* Left Button */}
           <div>
             <Button
@@ -57,7 +61,8 @@ const CreatePost = () => {
           </div>
           {/* Right Button */}
           <div>
-            <Button variant="secondary">
+           
+            <Button  disabled = {(!content.trim() && !imageLink) || isPosting} variant="secondary">
               <div className="flex items-center gap-2">
                 <Send />
                 Post
