@@ -120,7 +120,7 @@ export const getRandomUsers = async () => {
 
 
 // Toggoling the follow 
-export const toggoleFollow = async(targetId:string){
+export const toggoleFollow = async(targetId:string)=>{
   try{
     const myId = await getUserIdFromDb();
     if(!myId) return null;
@@ -171,6 +171,6 @@ export const toggoleFollow = async(targetId:string){
   
   }
   catch(err){
-
+    console.log('An error occured to toggole follow', err);
   }
 }
