@@ -39,7 +39,7 @@ const CreatePost = () => {
   };
 
   return (
-    <div>
+    <div className="px-4 lg:px-0">
       <Card>
         {/* Avatar and TextArea Section */}
         <div className="flex gap-2 p-4 w-full">
