@@ -30,7 +30,45 @@ export const getPosts = async()=>{
   if(!dbUser) return [];
 
   try{
+    const posts=prisma.post.findMany({
+      orderBy:{
+        createdAt:'desc',
+      },
+      include:{
+        author:{
+          select:{
+            image:true,
+            name:true,
+            username:true
+          }
+        },
+        likes:{
+          select:{
+            authorId:true,
+          }
+        },
+        comments:{
+          include:{
+            author:{
+              select:{
+                name:true,
+                username:true,
+                image:true
+              }
+            }
+          }
+        },
+        _count:{
+          select:{
+            likes:true,
+            comments:true
+          }
+        }
 
+      }
+    });
+
+    return posts;
   }
   catch(err){
     console.log('An error occured to fetching posts. ', err);
