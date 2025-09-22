@@ -2,13 +2,17 @@ import { Post } from "@/generated/prisma";
 import { Card } from "./ui/card";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
-import { Trash } from "lucide-react";
+import { Heart, MessageCircle, Trash } from "lucide-react";
 type PostWithAuthor = Post & {
   author: {
     name: string;
     username: string;
     image: string;
-  };
+  },
+  _count:{
+    likes:number,
+    comments:number
+  }
 };
 
 const PostCard = ({ post }: { post: PostWithAuthor }) => {
@@ -43,7 +47,6 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
             </div>
           </div>
          
-
           {/* Content */}
           <div>
             {/* Text */}
@@ -53,6 +56,19 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
             {/* TODO: Image */}
             <div>
 
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="flex  gap-5">
+            <div className="flex items-center gap-1">
+                <Heart height={18} />
+                <span>{post._count.likes}</span>
+            </div>
+
+            <div className="flex items-center gap-1">
+                <MessageCircle height={18} />
+                <span>{post._count.comments}</span>    
             </div>
           </div>
         </div>
