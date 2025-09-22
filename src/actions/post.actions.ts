@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { getUserByClerkId, getUserIdFromDb } from "./user.actions";
+import {getUserByClerkId, getUserIdFromDb } from "./user.actions";
 import { auth } from "@clerk/nextjs/server";
 
 export const postContent = async (content: string, Image: string) => {
@@ -23,4 +23,17 @@ export const postContent = async (content: string, Image: string) => {
 
 
 
+export const getPosts = async()=>{
+  const {userId} = await auth();
+  if(!userId) return [];
+  const dbUser = await getUserByClerkId(userId);
+  if(!dbUser) return [];
 
+  try{
+
+  }
+  catch(err){
+    console.log('An error occured to fetching posts. ', err);
+    return [];
+  }
+}
