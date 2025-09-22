@@ -30,7 +30,7 @@ export const getPosts = async()=>{
   if(!dbUser) return [];
 
   try{
-    const posts=prisma.post.findMany({
+    const posts=await prisma.post.findMany({
       orderBy:{
         createdAt:'desc',
       },
@@ -56,6 +56,9 @@ export const getPosts = async()=>{
                 image:true
               }
             }
+          },
+          orderBy:{
+            createdAt:"asc"
           }
         },
         _count:{
