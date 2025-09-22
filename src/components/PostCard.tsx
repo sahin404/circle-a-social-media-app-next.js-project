@@ -35,14 +35,14 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
               <span className="text-gray-500 text-sm ">
                 @{post.author.username}
               </span>
-              <span className="text-gray-600">
+              <span className="text-gray-500 text-sm">
                 {formatDistanceToNow(new Date(post.createdAt), {
                   addSuffix: true,
                 })}
               </span>
             </div>
             {/* Delete Button */}
-            <div className="text-gray-400">
+            <div className="text-gray-500">
               <Trash height={18} />
             </div>
           </div>
@@ -71,6 +71,8 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                 <span>{post._count.comments}</span>    
             </div>
           </div>
+          
+
         </div>
       </Card>
     </div>
