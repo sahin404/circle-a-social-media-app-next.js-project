@@ -1,10 +1,9 @@
-import { getPosts } from "@/actions/post.actions";
+
 import CreatePost from "@/components/CreatePost";
 import YouMayFollow from "@/components/YouMayFollow";
 
 export default async function Home() {
-  const posts = await getPosts();
-  console.log(posts);
+
   return (
     <div>
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
