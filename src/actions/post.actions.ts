@@ -60,6 +60,12 @@ export const getPosts = async()=>{
           orderBy:{
             createdAt:'asc',
           }
+        },
+        _count:{
+          select:{
+            likes:true,
+            comments:true
+          }
         }
       }
       
