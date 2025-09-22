@@ -42,6 +42,19 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
               <Trash height={18} />
             </div>
           </div>
+         
+
+          {/* Content */}
+          <div>
+            {/* Text */}
+            <div className="px-2 py-5">
+                <span>{post.content}</span>
+            </div>
+            {/* TODO: Image */}
+            <div>
+
+            </div>
+          </div>
         </div>
       </Card>
     </div>
