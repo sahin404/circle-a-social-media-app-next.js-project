@@ -22,7 +22,6 @@ export const postContent = async (content: string, Image: string) => {
 };
 
 
-
 export const getPosts = async()=>{
   const {userId} = await auth();
   if(!userId) return [];
