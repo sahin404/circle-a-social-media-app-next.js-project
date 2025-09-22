@@ -2,6 +2,7 @@
 import prisma from "@/lib/prisma";
 import {getUserByClerkId, getUserIdFromDb } from "./user.actions";
 import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 
 export const postContent = async (content: string, Image: string) => {
   try {
@@ -14,6 +15,7 @@ export const postContent = async (content: string, Image: string) => {
         authorId,
       },
     });
+    revalidatePath('/');
     return {success:true, post};
   } catch(err) {
     console.log("Error occured to do post. ", err);
@@ -69,7 +71,7 @@ export const getPosts = async()=>{
 
       }
     });
-
+    revalidatePath('/');
     return posts;
   }
   catch(err){
