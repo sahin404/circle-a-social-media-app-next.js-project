@@ -25,7 +25,7 @@ import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { getUserByClerkId } from "@/actions/user.actions";
-import { deletePost } from "@/actions/post.actions";
+import { deletePost, likePost } from "@/actions/post.actions";
 import toast from "react-hot-toast";
 // TypeScript
 type PostWithAuthor = Post & {
@@ -86,7 +86,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
   };
 
   // Handle Like
-  const handleLike = () => {
+  const handleLike = async() => {
     if (hasLiked) {
       setHasLiked(!hasLiked);
       setLikeFill(!likeFill);
@@ -97,6 +97,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
       setLikeFill(!likeFill);
       setOptimisticLikes((prev) => prev + 1);
       //liked in database
+      await likePost(post.id, loggedInUser.id);
     }
   };
 

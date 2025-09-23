@@ -108,6 +108,6 @@ export const likePost = async(postId:string, loggoedInUserId:string)=>{
     })
   }
   catch(err){
-
+    console.log('An error occured to like post!', err);
   }
 }
