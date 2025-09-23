@@ -15,6 +15,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Heart, Loader2Icon, MessageSquare, Send, Trash } from "lucide-react";
+import profilePic from '\avatar.jpg';
 import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
@@ -142,8 +143,8 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
               <div>
                 <Image
                   className="rounded-full"
-                  alt="Profile Picture"
-                  src={post.author.image}
+                  alt="user dp"
+                  src={post.author.image || '/avatar.jpg'}
                   height={40}
                   width={40}
                 ></Image>
@@ -265,7 +266,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                             <Image
                               className="rounded-full"
                               alt="Profile Picture"
-                              src={comment.author.image}
+                              src={user?.imageUrl || '/avatar.jpg'}
                               height={25}
                               width={25}
                             ></Image>
