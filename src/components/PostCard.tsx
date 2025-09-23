@@ -34,17 +34,22 @@ type PostWithAuthor = Post & {
     name: string;
     username: string;
     image: string;
-  };
+  },
   _count: {
     likes: number;
     comments: number;
-  };
-  comments: Comment[];
+  },
+  comments: Comment[],
+  likes:{authorId: string}[]
+
 };
 
 const PostCard = ({ post }: { post: PostWithAuthor }) => {
   const [openComments, setOpenComments] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
+  const [optimisticLikes, setOptimisticLikes] = useState(post._count.likes);
+  const [likeFill, setLikeFill] = useState(false);
+  const [hasLiked, setHasLiked] = useState(false);
   const { user } = useUser();
 
   // Fetching LoggedIn User
@@ -75,6 +80,34 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
 
   // Handle Likes
   const handleLikes = () => {};
+
+  // Handle Like
+  const handleLike = ()=>{
+    if(!loggedInUser) return null;
+    const result = post.likes.some(like=>like.authorId==loggedInUser.id);
+    setHasLiked(!hasLiked);
+
+    if(result){
+      setLikeFill(true);
+      setOptimisticLikes(optimisticLikes-1);
+    }
+    if(hasLiked){
+      
+    }
+    
+    if(result){
+      setLikeFill(false);
+      setOptimisticLikes(optimisticLikes-1);
+      //unlike in database
+      
+    }
+    else{
+      setLikeFill(true);
+      setOptimisticLikes(optimisticLikes+1);
+      //like
+      console.log('try to like');
+    }
+  }
 
   // Handle Comments
   const handleComments = () => {};
@@ -150,8 +183,10 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
           {/* Footer */}
           <div className="flex  gap-5">
             <div className="flex items-center gap-1">
-              <Heart height={18} />
-              <span>{post._count.likes}</span>
+              <button onClick={handleLike}>
+                <Heart height={18} />
+              </button>
+              <span>{optimisticLikes}</span>
             </div>
 
             <div>
