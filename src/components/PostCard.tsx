@@ -1,13 +1,16 @@
 "use client";
-import { Comment, Post } from "@/generated/prisma";
+import { Comment, Post, User } from "@/generated/prisma";
 import { Card } from "./ui/card";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import { Divide, Heart, MessageCircle, MessageSquare, Trash } from "lucide-react";
 import { Separator } from "./ui/separator";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
+import { getUserByClerkId } from "@/actions/user.actions";
 type PostWithAuthor = Post & {
   author: {
+    id:string,
     name: string;
     username: string;
     image: string;
@@ -20,7 +23,24 @@ type PostWithAuthor = Post & {
 };
 
 const PostCard = ({ post }: { post: PostWithAuthor }) => {
+
   const [openComments, setOpenComments] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
+  
+  const {user} = useUser();
+  useEffect(()=>{
+    if(!user) return;
+
+    const fetchUser = async()=>{
+      const dbUser= await getUserByClerkId(user.id);
+      if(dbUser) setLoggedInUser(dbUser);
+    }
+    fetchUser();
+    
+  },[user])
+
+  if(!loggedInUser) return null;
+  
   return (
     <div>
       <Card>
@@ -46,10 +66,16 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                 })}
               </span>
             </div>
-            {/* Delete Button */}
-            <div className="text-gray-500">
-              <Trash height={18} />
-            </div>
+            {
+              loggedInUser.id === post.author.id?
+              <div>
+              {/* Delete Button */}
+                <div className="text-gray-500">
+                  <Trash height={18} />
+                </div>
+              </div>:''
+            }
+           
           </div>
 
           {/* Content */}
