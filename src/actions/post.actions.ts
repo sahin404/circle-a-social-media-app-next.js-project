@@ -111,3 +111,19 @@ export const likePost = async(postId:string, loggoedInUserId:string)=>{
     console.log('An error occured to like post!', err);
   }
 }
+
+export const unlikePost = async(postId:string, loggoedInUserId:string)=>{
+  try{
+    await prisma.like.delete({
+      where:{
+        authorId_postId:{
+          authorId:loggoedInUserId,
+          postId:postId
+        }
+      }
+    })
+  }
+  catch(err){
+    console.log('An error occured to unlike post!', err);
+  }
+}
