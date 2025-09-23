@@ -3,7 +3,24 @@ import { Comment, Post, User } from "@/generated/prisma";
 import { Card } from "./ui/card";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
-import { Divide, Heart, MessageCircle, MessageSquare, Trash } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import {
+  Divide,
+  Heart,
+  MessageCircle,
+  MessageSquare,
+  Trash,
+} from "lucide-react";
 import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
@@ -13,7 +30,7 @@ import toast from "react-hot-toast";
 // TypeScript
 type PostWithAuthor = Post & {
   author: {
-    id:string,
+    id: string;
     name: string;
     username: string;
     image: string;
@@ -26,50 +43,41 @@ type PostWithAuthor = Post & {
 };
 
 const PostCard = ({ post }: { post: PostWithAuthor }) => {
-
   const [openComments, setOpenComments] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
-  const {user} = useUser();
+  const { user } = useUser();
 
   // Fetching LoggedIn User
-  useEffect(()=>{
-    if(!user) return;
-    const fetchUser = async()=>{
-      const dbUser= await getUserByClerkId(user.id);
-      if(dbUser) setLoggedInUser(dbUser);
-    }
+  useEffect(() => {
+    if (!user) return;
+    const fetchUser = async () => {
+      const dbUser = await getUserByClerkId(user.id);
+      if (dbUser) setLoggedInUser(dbUser);
+    };
     fetchUser();
-    
-  },[user])
+  }, [user]);
 
-  if(!loggedInUser) return null;
-  
+  if (!loggedInUser) return null;
 
   // Handle Delete Button
-  const handleDeleteButton= async()=>{
-    try{
+  const handleDelete = async () => {
+    try {
       const result = await deletePost(post.id);
-      if(result.success){
-         toast.success("Successfully deleted the post!");
+      if (result.success) {
+        toast.success("Successfully deleted the post!");
+      } else {
+        toast.error("Something Went Wrong!");
       }
-      else{
-        toast.error('Something Went Wrong!');
-      }
+    } catch (err) {
+      toast.error("Something Went Wrong!");
     }
-    catch(err){
-        toast.error('Something Went Wrong!');
-    }
-  }
+  };
 
   // Handle Likes
-  const handleLikes=()=>{
-
-  }
+  const handleLikes = () => {};
 
   // Handle Comments
-  const handleComments=()=>{
-
-  }
+  const handleComments = () => {};
 
   return (
     <div>
@@ -96,18 +104,37 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                 })}
               </span>
             </div>
-            {
-              loggedInUser.id === post.author.id?
+            {loggedInUser.id === post.author.id ? (
               <div>
-              {/* Delete Button */}
-                <button onClick={handleDeleteButton}>
-                  <div className="text-gray-500">
-                    <Trash height={18} />
-                  </div>
-                </button>
-              </div>:''
-            }
-           
+                {/* Delete Button */}
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <button>
+                      <div className="text-gray-500">
+                        <Trash height={18} />
+                      </div>
+                    </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete your post from your account.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
 
           {/* Content */}
@@ -132,7 +159,10 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                 className="flex items-center gap-1"
                 onClick={() => setOpenComments(!openComments)}
               >
-                 <MessageSquare fill={openComments ? "currentColor" : "none"} height={18} />
+                <MessageSquare
+                  fill={openComments ? "currentColor" : "none"}
+                  height={18}
+                />
                 <span>{post._count.comments}</span>
               </button>
             </div>
