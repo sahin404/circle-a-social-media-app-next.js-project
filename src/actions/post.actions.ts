@@ -20,9 +20,7 @@ export const postContent = async (content: string, Image: string) => {
   } catch(err) {
     console.log("Error occured to do post. ", err);
     return {success:false};
-  }
-};
-
+}};
 
 export const getPosts = async()=>{
   const {userId} = await auth();

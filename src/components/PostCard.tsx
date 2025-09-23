@@ -14,11 +14,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {
-  Heart,
-  MessageSquare,
-  Trash,
-} from "lucide-react";
+import { Heart, MessageSquare, Send, Trash } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
@@ -26,6 +22,8 @@ import { getUserByClerkId } from "@/actions/user.actions";
 import { deletePost, likePost, unlikePost } from "@/actions/post.actions";
 import toast from "react-hot-toast";
 import { useTheme } from "next-themes";
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
 // TypeScript
 type PostWithAuthor = Post & {
   author: {
@@ -49,7 +47,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
   const [likeFill, setLikeFill] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const { user } = useUser();
-  const {theme} = useTheme();
+  const { theme } = useTheme();
 
   // Fetching LoggedIn User
   useEffect(() => {
@@ -86,7 +84,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
   };
 
   // Handle Like
-  const handleLike = async() => {
+  const handleLike = async () => {
     if (hasLiked) {
       setHasLiked(!hasLiked);
       setLikeFill(!likeFill);
@@ -179,20 +177,19 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
           <div className="flex  gap-5">
             <div className="flex items-center gap-1">
               <button onClick={handleLike}>
-                {
-                  theme==='dark'? <Heart
-                  stroke={likeFill ? "red" : "white"}
-                  fill={`${likeFill ? "red" : "black"}`}
-                  
-                  height={18}
-                /> : <Heart
-                  stroke={likeFill ? "red" : "black"}
-                  fill={`${likeFill ? "red" : "white"}`}
-                  
-                  height={18}
-                />
-                }
-                
+                {theme === "dark" ? (
+                  <Heart
+                    stroke={likeFill ? "red" : "white"}
+                    fill={`${likeFill ? "red" : "black"}`}
+                    height={18}
+                  />
+                ) : (
+                  <Heart
+                    stroke={likeFill ? "red" : "black"}
+                    fill={`${likeFill ? "red" : "white"}`}
+                    height={18}
+                  />
+                )}
               </button>
               <span>{optimisticLikes}</span>
             </div>
@@ -223,6 +220,32 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                   {post.comments.map((comment) => (
                     <div></div>
                   ))}
+                </div>
+                {/* Create Comment */}
+                <div className="flex-col">
+                  <div className="flex space-x-3">
+                    <div>
+                      <Image
+                        className="rounded-full"
+                        height={30}
+                        width={30}
+                        src={loggedInUser.image || "/avatar.jpg"}
+                        alt="user Image"
+                      />
+                    </div>
+                    <div className="w-full">
+                      <Textarea
+                        placeholder="Write your comment..."
+                        className="h-20 resize-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-5 flex justify-end items-center">
+                    <Button variant={"secondary"} className="flex items-center">
+                      <Send />
+                      Comment
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
