@@ -41,13 +41,17 @@ type PostWithAuthor = Post & {
     likes: number;
     comments: number;
   };
-  comments: Comment[];
   likes: { authorId: string }[];
-  comment: {
+  comments: {
+    id: string;
     content: string;
-    author: User;
     createdAt: Date;
-  };
+    author: {
+      name: string;
+      username: string;
+      image: string;
+    };
+  }[];
 };
 
 const PostCard = ({ post }: { post: PostWithAuthor }) => {
@@ -133,33 +137,33 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
         <div className="p-6">
           {/* Header */}
           <div className="flex justify-between">
-          <div className="flex gap-3">
-            {/* Image */}
-            <div>
-              <Image
-                className="rounded-full"
-                alt="Profile Picture"
-                src={post.author.image}
-                height={40}
-                width={40}
-              ></Image>
-            </div>
-            {/* Name, username, time */}
-            <div className="flex flex-col lg:flex-row lg:gap-3">
-              <span>{post.author.name}</span>
-              <div className="flex gap-3">
-                <span className="text-gray-500 text-sm ">
-                  @{post.author.username}
-                </span>
+            <div className="flex gap-3">
+              {/* Image */}
+              <div>
+                <Image
+                  className="rounded-full"
+                  alt="Profile Picture"
+                  src={post.author.image}
+                  height={40}
+                  width={40}
+                ></Image>
+              </div>
+              {/* Name, username, time */}
+              <div className="flex flex-col lg:flex-row lg:gap-3">
+                <span>{post.author.name}</span>
+                <div className="flex gap-3">
+                  <span className="text-gray-500 text-sm ">
+                    @{post.author.username}
+                  </span>
 
-                <span className="text-gray-500 text-sm">
-                  {formatDistanceToNow(new Date(post.createdAt), {
-                    addSuffix: true,
-                  })}
-                </span>
+                  <span className="text-gray-500 text-sm">
+                    {formatDistanceToNow(new Date(post.createdAt), {
+                      addSuffix: true,
+                    })}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
             {/* Delete Button */}
             <div>
               {loggedInUser.id === post.author.id ? (
@@ -195,8 +199,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                 ""
               )}
             </div>
-            </div>
-          
+          </div>
 
           {/* Content */}
           <div>
@@ -251,13 +254,49 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
               </div>
               <div>
                 {/* Fetching Comment */}
-                <div>
+                <div className="space-y-5">
                   {post.comments.map((comment) => (
-                    <div key={comment.id}>{comment.content}</div>
+                    <div key={comment.id}>
+                      <div>
+                        {/* Comment Author Decoration */}
+                        <div className="flex gap-3">
+                          {/* Image */}
+                          <div>
+                            <Image
+                              className="rounded-full"
+                              alt="Profile Picture"
+                              src={comment.author.image}
+                              height={25}
+                              width={25}
+                            ></Image>
+                          </div>
+                          {/* Name, username, time */}
+                          <div className="flex flex-col lg:flex-row lg:gap-3">
+                            <span>{post.author.name}</span>
+                            <div className="flex gap-3">
+                              <span className="text-gray-500 text-sm ">
+                                @{comment.author.username}
+                              </span>
+
+                              <span className="text-gray-500 text-sm">
+                                {formatDistanceToNow(
+                                  new Date(comment.createdAt),
+                                  {
+                                    addSuffix: true,
+                                  }
+                                )}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        {/* Comment Content */}
+                        <div className="ml-10">{comment.content}</div>
+                      </div>
+                    </div>
                   ))}
                 </div>
                 {/* Create Comment */}
-                <div className="flex flex-col">
+                <div className="flex flex-col mt-10">
                   <div className="flex space-x-3">
                     <div>
                       <Image
