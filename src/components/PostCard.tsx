@@ -3,7 +3,7 @@ import { Comment, Post } from "@/generated/prisma";
 import { Card } from "./ui/card";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
-import { Divide, Heart, MessageCircle, Trash } from "lucide-react";
+import { Divide, Heart, MessageCircle, MessageSquare, Trash } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { useState } from "react";
 type PostWithAuthor = Post & {
@@ -74,7 +74,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                 className="flex items-center gap-1"
                 onClick={() => setOpenComments(!openComments)}
               >
-                <MessageCircle height={18} />
+                 <MessageSquare fill={openComments ? "currentColor" : "none"} height={18} />
                 <span>{post._count.comments}</span>
               </button>
             </div>
