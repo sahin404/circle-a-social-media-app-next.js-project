@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { getUserByClerkId, getUserIdFromDb } from "./user.actions";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { NotificationType } from "@/generated/prisma";
 
 export const postContent = async (content: string, Image: string) => {
   try {
@@ -124,7 +125,7 @@ export const likePost = async (postId: string, loggoedInUserId: string) => {
             data:{
               userId: post.authorId,
               creatorId:loggoedInUserId,
-              type:'LIKE',
+              type:NotificationType.LIKE,
               postId:postId
             }
           })
@@ -156,13 +157,38 @@ export const createComment = async (
   content: string
 ) => {
   try {
-    await prisma.comment.create({
-      data: {
-        postId,
-        authorId,
-        content,
-      },
+    // find post author
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      select: { authorId: true },
     });
+
+    if (!post) return;
+
+    await prisma.$transaction([
+      // create comment
+      prisma.comment.create({
+        data: {
+          postId,
+          authorId,
+          content,
+        },
+      }),
+      // create notification (if not self-comment)
+      ...(post.authorId !== authorId
+        ? [
+            prisma.notification.create({
+              data: {
+                userId: post.authorId, 
+                creatorId: authorId,    
+                type: NotificationType.Comment,       
+                postId: postId,
+              },
+            }),
+          ]
+        : []),
+    ]);
+
     revalidatePath("/");
   } catch (err) {
     console.log("An error Occured to create Comment!", err);
