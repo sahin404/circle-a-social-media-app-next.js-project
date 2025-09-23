@@ -15,9 +15,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
-  Divide,
   Heart,
-  MessageCircle,
   MessageSquare,
   Trash,
 } from "lucide-react";
@@ -27,6 +25,7 @@ import { useUser } from "@clerk/nextjs";
 import { getUserByClerkId } from "@/actions/user.actions";
 import { deletePost, likePost, unlikePost } from "@/actions/post.actions";
 import toast from "react-hot-toast";
+import { useTheme } from "next-themes";
 // TypeScript
 type PostWithAuthor = Post & {
   author: {
@@ -50,6 +49,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
   const [likeFill, setLikeFill] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const { user } = useUser();
+  const {theme} = useTheme();
 
   // Fetching LoggedIn User
   useEffect(() => {
@@ -179,11 +179,20 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
           <div className="flex  gap-5">
             <div className="flex items-center gap-1">
               <button onClick={handleLike}>
-                <Heart
-                  stroke={likeFill ? "red" : "currentColor"}
-                  fill={`${likeFill ? "red" : ""}`}
+                {
+                  theme==='dark'? <Heart
+                  stroke={likeFill ? "red" : "white"}
+                  fill={`${likeFill ? "red" : "black"}`}
+                  
+                  height={18}
+                /> : <Heart
+                  stroke={likeFill ? "red" : "black"}
+                  fill={`${likeFill ? "red" : "white"}`}
+                  
                   height={18}
                 />
+                }
+                
               </button>
               <span>{optimisticLikes}</span>
             </div>
