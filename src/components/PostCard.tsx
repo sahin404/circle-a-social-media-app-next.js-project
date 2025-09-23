@@ -14,12 +14,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Heart, MessageSquare, Send, Trash } from "lucide-react";
+import { Heart, Loader2Icon, MessageSquare, Send, Trash } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { getUserByClerkId } from "@/actions/user.actions";
-import { createComment, deletePost, likePost, unlikePost } from "@/actions/post.actions";
+import {
+  createComment,
+  deletePost,
+  likePost,
+  unlikePost,
+} from "@/actions/post.actions";
 import toast from "react-hot-toast";
 import { useTheme } from "next-themes";
 import { Textarea } from "./ui/textarea";
@@ -36,13 +41,13 @@ type PostWithAuthor = Post & {
     likes: number;
     comments: number;
   };
-  comments: Comment[],
-  likes: { authorId: string }[],
+  comments: Comment[];
+  likes: { authorId: string }[];
   comment: {
-    content:string,
-    author:User,
-    createdAt:Date,
-  }
+    content: string;
+    author: User;
+    createdAt: Date;
+  };
 };
 
 const PostCard = ({ post }: { post: PostWithAuthor }) => {
@@ -52,6 +57,8 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
   const [likeFill, setLikeFill] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [comment, setComment] = useState("");
+  const [commenting, setCommenting] = useState(false);
+
   const { user } = useUser();
   const { theme } = useTheme();
 
@@ -107,8 +114,18 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
   };
 
   // Handle Comments
-  const handleComment = async() => {
-    await createComment(post.id, loggedInUser.id, comment);
+  const handleComment = async () => {
+    if (commenting) return;
+    try {
+      setCommenting(true);
+      await createComment(post.id, loggedInUser.id, comment);
+      
+    } catch (err) {
+      console.log("An error Occured to create Comment!", err);
+    } finally {
+      setComment("");
+      setCommenting(false);
+    }
   };
 
   return (
@@ -226,13 +243,11 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                 {/* Fetching Comment */}
                 <div>
                   {post.comments.map((comment) => (
-                    <div key={comment.id}>
-                      {comment.content}
-                    </div>
+                    <div key={comment.id}>{comment.content}</div>
                   ))}
                 </div>
                 {/* Create Comment */}
-                <div className="flex-col">
+                <div className="flex flex-col">
                   <div className="flex space-x-3">
                     <div>
                       <Image
@@ -246,16 +261,29 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                     <div className="w-full">
                       <Textarea
                         value={comment}
-                        onChange={(e)=>setComment(e.target.value)}
+                        onChange={(e) => setComment(e.target.value)}
                         placeholder="Write your comment..."
                         className="h-20 resize-none"
                       />
                     </div>
                   </div>
-                  <div className="mt-5 flex justify-end items-center">
-                    <Button onClick={handleComment} variant={"secondary"} className="flex items-center">
-                      <Send />
-                      Comment
+                  <div className="flex justify-end mt-3">
+                    <Button
+                      disabled={commenting || !comment}
+                      onClick={handleComment}
+                      variant="secondary"
+                    >
+                      {commenting ? (
+                        <div className="flex gap-2">
+                          <Loader2Icon className="animate-spin"></Loader2Icon>
+                          Submitting..
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <Send size={15} />
+                          Comment
+                        </div>
+                      )}
                     </Button>
                   </div>
                 </div>
