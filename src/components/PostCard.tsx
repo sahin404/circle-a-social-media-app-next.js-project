@@ -70,9 +70,11 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
               loggedInUser.id === post.author.id?
               <div>
               {/* Delete Button */}
-                <div className="text-gray-500">
-                  <Trash height={18} />
-                </div>
+                <button>
+                  <div className="text-gray-500">
+                    <Trash height={18} />
+                  </div>
+                </button>
               </div>:''
             }
            
