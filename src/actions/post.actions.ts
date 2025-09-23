@@ -125,3 +125,19 @@ export const unlikePost = async(postId:string, loggoedInUserId:string)=>{
     console.log('An error occured to unlike post!', err);
   }
 }
+
+export const createComment = async(postId:string, authorId:string, content:string)=>{
+  try{
+    await prisma.comment.create({
+      data:{
+        postId,
+        authorId,
+        content
+      }
+    })
+    revalidatePath('/');
+  }
+  catch(err){
+    console.log('An error Occured to create Comment!', err);
+  }
+}

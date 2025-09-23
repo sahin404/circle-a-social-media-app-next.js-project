@@ -19,7 +19,7 @@ import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { getUserByClerkId } from "@/actions/user.actions";
-import { deletePost, likePost, unlikePost } from "@/actions/post.actions";
+import { createComment, deletePost, likePost, unlikePost } from "@/actions/post.actions";
 import toast from "react-hot-toast";
 import { useTheme } from "next-themes";
 import { Textarea } from "./ui/textarea";
@@ -36,8 +36,13 @@ type PostWithAuthor = Post & {
     likes: number;
     comments: number;
   };
-  comments: Comment[];
-  likes: { authorId: string }[];
+  comments: Comment[],
+  likes: { authorId: string }[],
+  comment: {
+    content:string,
+    author:User,
+    createdAt:Date,
+  }
 };
 
 const PostCard = ({ post }: { post: PostWithAuthor }) => {
@@ -102,7 +107,9 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
   };
 
   // Handle Comments
-  const handleComment = () => {};
+  const handleComment = async() => {
+    await createComment(post.id, loggedInUser.id, comment);
+  };
 
   return (
     <div>
@@ -219,7 +226,9 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                 {/* Fetching Comment */}
                 <div>
                   {post.comments.map((comment) => (
-                    <div></div>
+                    <div key={comment.id}>
+                      {comment.content}
+                    </div>
                   ))}
                 </div>
                 {/* Create Comment */}
