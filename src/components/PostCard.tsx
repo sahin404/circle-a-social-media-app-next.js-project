@@ -119,7 +119,6 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
     try {
       setCommenting(true);
       await createComment(post.id, loggedInUser.id, comment);
-      
     } catch (err) {
       console.log("An error Occured to create Comment!", err);
     } finally {
@@ -134,8 +133,9 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
         <div className="p-6">
           {/* Header */}
           <div className="flex justify-between">
-            {/* Author */}
-            <div className="flex gap-3">
+          <div className="flex gap-3">
+            {/* Image */}
+            <div>
               <Image
                 className="rounded-full"
                 alt="Profile Picture"
@@ -143,50 +143,60 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                 height={40}
                 width={40}
               ></Image>
-              <span>{post.author.name}</span>
-              <span className="text-gray-500 text-sm ">
-                @{post.author.username}
-              </span>
-              <span className="text-gray-500 text-sm">
-                {formatDistanceToNow(new Date(post.createdAt), {
-                  addSuffix: true,
-                })}
-              </span>
             </div>
-            {/* Delete Button */}
-            {loggedInUser.id === post.author.id ? (
-              <div>
-                <AlertDialog>
-                  <AlertDialogTrigger>
-                    <button>
-                      <div className="text-gray-500">
-                        <Trash height={18} />
-                      </div>
-                    </button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you absolutely sure?
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete your post from your account.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleDelete}>
-                        Delete
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+            {/* Name, username, time */}
+            <div className="flex flex-col lg:flex-row lg:gap-3">
+              <span>{post.author.name}</span>
+              <div className="flex gap-3">
+                <span className="text-gray-500 text-sm ">
+                  @{post.author.username}
+                </span>
+
+                <span className="text-gray-500 text-sm">
+                  {formatDistanceToNow(new Date(post.createdAt), {
+                    addSuffix: true,
+                  })}
+                </span>
               </div>
-            ) : (
-              ""
-            )}
+            </div>
           </div>
+            {/* Delete Button */}
+            <div>
+              {loggedInUser.id === post.author.id ? (
+                <div>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <button>
+                        <div className="text-gray-500">
+                          <Trash height={18} />
+                        </div>
+                      </button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete your post from your account.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleDelete}>
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+            </div>
+          
 
           {/* Content */}
           <div>
