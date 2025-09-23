@@ -8,6 +8,9 @@ import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { getUserByClerkId } from "@/actions/user.actions";
+import { deletePost } from "@/actions/post.actions";
+import toast from "react-hot-toast";
+// TypeScript
 type PostWithAuthor = Post & {
   author: {
     id:string,
@@ -26,11 +29,11 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
 
   const [openComments, setOpenComments] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
-  
   const {user} = useUser();
+
+  // Fetching LoggedIn User
   useEffect(()=>{
     if(!user) return;
-
     const fetchUser = async()=>{
       const dbUser= await getUserByClerkId(user.id);
       if(dbUser) setLoggedInUser(dbUser);
@@ -41,6 +44,33 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
 
   if(!loggedInUser) return null;
   
+
+  // Handle Delete Button
+  const handleDeleteButton= async()=>{
+    try{
+      const result = await deletePost(post.id);
+      if(result.success){
+         toast.success("Successfully deleted the post!");
+      }
+      else{
+        toast.error('Something Went Wrong!');
+      }
+    }
+    catch(err){
+        toast.error('Something Went Wrong!');
+    }
+  }
+
+  // Handle Likes
+  const handleLikes=()=>{
+
+  }
+
+  // Handle Comments
+  const handleComments=()=>{
+
+  }
+
   return (
     <div>
       <Card>
@@ -70,7 +100,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
               loggedInUser.id === post.author.id?
               <div>
               {/* Delete Button */}
-                <button>
+                <button onClick={handleDeleteButton}>
                   <div className="text-gray-500">
                     <Trash height={18} />
                   </div>

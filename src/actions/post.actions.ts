@@ -80,3 +80,20 @@ export const getPosts = async()=>{
     return [];
   }
 }
+
+
+export const deletePost = async(postId:string)=>{
+  try{
+     await prisma.post.delete({
+      where:{
+        id:postId
+      }
+    })
+    revalidatePath('/');
+    return {success:true};
+  }
+  catch(err){
+    console.log('An error occured to delete post!', err);
+    return {success:false};
+  }
+}
