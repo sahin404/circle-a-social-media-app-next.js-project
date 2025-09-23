@@ -46,6 +46,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
   const [optimisticLikes, setOptimisticLikes] = useState(post._count.likes);
   const [likeFill, setLikeFill] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
+  const [comment, setComment] = useState("");
   const { user } = useUser();
   const { theme } = useTheme();
 
@@ -101,7 +102,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
   };
 
   // Handle Comments
-  const handleComments = () => {};
+  const handleComment = () => {};
 
   return (
     <div>
@@ -235,13 +236,15 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                     </div>
                     <div className="w-full">
                       <Textarea
+                        value={comment}
+                        onChange={(e)=>setComment(e.target.value)}
                         placeholder="Write your comment..."
                         className="h-20 resize-none"
                       />
                     </div>
                   </div>
                   <div className="mt-5 flex justify-end items-center">
-                    <Button variant={"secondary"} className="flex items-center">
+                    <Button onClick={handleComment} variant={"secondary"} className="flex items-center">
                       <Send />
                       Comment
                     </Button>
