@@ -13,7 +13,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 import {
   Divide,
   Heart,
@@ -34,14 +34,13 @@ type PostWithAuthor = Post & {
     name: string;
     username: string;
     image: string;
-  },
+  };
   _count: {
     likes: number;
     comments: number;
-  },
-  comments: Comment[],
-  likes:{authorId: string}[]
-
+  };
+  comments: Comment[];
+  likes: { authorId: string }[];
 };
 
 const PostCard = ({ post }: { post: PostWithAuthor }) => {
@@ -62,6 +61,14 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
     fetchUser();
   }, [user]);
 
+  // asignling the loggedIn user liked or not this post
+  useEffect(() => {
+    if (!loggedInUser) return;
+    const result = post.likes.some((like) => like.authorId == loggedInUser.id);
+    setLikeFill(result);
+    setHasLiked(result);
+  }, [loggedInUser, post.likes]);
+
   if (!loggedInUser) return null;
 
   // Handle Delete Button
@@ -78,36 +85,21 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
     }
   };
 
-  // Handle Likes
-  const handleLikes = () => {};
-
   // Handle Like
-  const handleLike = ()=>{
-    if(!loggedInUser) return null;
-    const result = post.likes.some(like=>like.authorId==loggedInUser.id);
-    setHasLiked(!hasLiked);
-
-    if(result){
-      setLikeFill(true);
-      setOptimisticLikes(optimisticLikes-1);
-    }
+  const handleLike = () => {
     if(hasLiked){
-      
-    }
-    
-    if(result){
-      setLikeFill(false);
-      setOptimisticLikes(optimisticLikes-1);
+      setHasLiked(!hasLiked);
+      setLikeFill(!likeFill);
+      setOptimisticLikes(prev=>prev-1);
       //unlike in database
-      
     }
     else{
-      setLikeFill(true);
-      setOptimisticLikes(optimisticLikes+1);
-      //like
-      console.log('try to like');
+      setHasLiked(!hasLiked);
+      setLikeFill(!likeFill);
+      setOptimisticLikes(prev=>prev+1); 
+      //liked in database
     }
-  }
+  };
 
   // Handle Comments
   const handleComments = () => {};
@@ -160,7 +152,9 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+                      <AlertDialogAction onClick={handleDelete}>
+                        Delete
+                      </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
