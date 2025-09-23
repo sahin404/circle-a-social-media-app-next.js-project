@@ -81,7 +81,6 @@ export const getPosts = async()=>{
   }
 }
 
-
 export const deletePost = async(postId:string)=>{
   try{
      await prisma.post.delete({
@@ -95,5 +94,20 @@ export const deletePost = async(postId:string)=>{
   catch(err){
     console.log('An error occured to delete post!', err);
     return {success:false};
+  }
+}
+
+export const likePost = async(postId:string, loggoedInUserId:string)=>{
+  try{
+    if(!postId || !loggoedInUserId) return;
+    await prisma.like.create({
+      data:{
+        authorId: loggoedInUserId,
+        postId: postId
+      }
+    })
+  }
+  catch(err){
+
   }
 }

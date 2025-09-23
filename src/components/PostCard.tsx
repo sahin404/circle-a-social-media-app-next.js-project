@@ -87,16 +87,15 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
 
   // Handle Like
   const handleLike = () => {
-    if(hasLiked){
+    if (hasLiked) {
       setHasLiked(!hasLiked);
       setLikeFill(!likeFill);
-      setOptimisticLikes(prev=>prev-1);
+      setOptimisticLikes((prev) => prev - 1);
       //unlike in database
-    }
-    else{
+    } else {
       setHasLiked(!hasLiked);
       setLikeFill(!likeFill);
-      setOptimisticLikes(prev=>prev+1); 
+      setOptimisticLikes((prev) => prev + 1);
       //liked in database
     }
   };
@@ -129,9 +128,9 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                 })}
               </span>
             </div>
+            {/* Delete Button */}
             {loggedInUser.id === post.author.id ? (
               <div>
-                {/* Delete Button */}
                 <AlertDialog>
                   <AlertDialogTrigger>
                     <button>
@@ -178,7 +177,11 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
           <div className="flex  gap-5">
             <div className="flex items-center gap-1">
               <button onClick={handleLike}>
-                <Heart height={18} />
+                <Heart
+                  stroke={likeFill ? "red" : "currentColor"}
+                  fill={`${likeFill ? "red" : ""}`}
+                  height={18}
+                />
               </button>
               <span>{optimisticLikes}</span>
             </div>
