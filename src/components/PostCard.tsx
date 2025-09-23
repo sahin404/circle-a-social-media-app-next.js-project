@@ -266,7 +266,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                             <Image
                               className="rounded-full"
                               alt="Profile Picture"
-                              src={user?.imageUrl || '/avatar.jpg'}
+                              src={ comment.author.image || '/avatar.jpg'}
                               height={25}
                               width={25}
                             ></Image>
