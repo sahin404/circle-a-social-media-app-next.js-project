@@ -205,7 +205,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
           {/* Content */}
           <div>
             {/* Text */}
-            <div className="px-2 py-5">
+            <div className=" py-5">
               <span>{post.content}</span>
             </div>
             {/* TODO: Image */}
