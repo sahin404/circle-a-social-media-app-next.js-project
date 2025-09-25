@@ -11,7 +11,8 @@ import {
 } from "./ui/card";
 import Image from "next/image";
 import { Separator } from "./ui/separator";
-import { Link, MapPin } from "lucide-react";
+import { Link2, MapPin } from "lucide-react";
+import Link from "next/link";
 
 const Sidebar = async () => {
   const user = await currentUser();
@@ -25,6 +26,7 @@ const Sidebar = async () => {
     <div>
       <Card>
         <CardHeader className="flex items-center justify-center space-y-5">
+          <Link href={`/profile/${dbUser.username}`}>
           <Image
             className="rounded-full"
             width={100}
@@ -32,6 +34,7 @@ const Sidebar = async () => {
             src={dbUser?.image || "avatar.jpg"}
             alt="Profile Picture"
           />
+          </Link>
           <div className="space-y-1 text-center">
             <CardTitle>{dbUser.name}</CardTitle>
             <CardDescription>{dbUser.username}</CardDescription>
@@ -65,7 +68,7 @@ const Sidebar = async () => {
               <span>{dbUser.location || "No Location"}</span>
             </div>
             <div className="flex items-center gap-1">
-               <Link className="h-5" />
+               <Link2 className="h-5" />
               <span>{dbUser.website || "No Website"}</span>
             </div>
           </div>

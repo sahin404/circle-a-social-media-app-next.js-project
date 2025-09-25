@@ -15,7 +15,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Heart, Loader2Icon, MessageSquare, Send, Trash } from "lucide-react";
-import profilePic from '\avatar.jpg';
+import profilePic from "avatar.jpg";
 import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
@@ -30,6 +30,7 @@ import toast from "react-hot-toast";
 import { useTheme } from "next-themes";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
+import Link from "next/link";
 // TypeScript
 type PostWithAuthor = Post & {
   author: {
@@ -140,18 +141,23 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
           <div className="flex justify-between">
             <div className="flex gap-3">
               {/* Image */}
-              <div>
-                <Image
-                  className="rounded-full"
-                  alt="user dp"
-                  src={post.author.image || '/avatar.jpg'}
-                  height={40}
-                  width={40}
-                ></Image>
-              </div>
+              <Link href={`/profile/${post.author.username}`}>
+                <div>
+                  <Image
+                    className="rounded-full"
+                    alt="user dp"
+                    src={post.author.image || "/avatar.jpg"}
+                    height={40}
+                    width={40}
+                  ></Image>
+                </div>
+              </Link>
               {/* Name, username, time */}
               <div className="flex flex-col lg:flex-row lg:gap-3">
-                <span>{post.author.name}</span>
+                <Link href={`/profile/${post.author.username}`}>
+                  <span>{post.author.name}</span>
+                </Link>
+
                 <div className="flex gap-3">
                   <span className="text-gray-500 text-sm ">
                     @{post.author.username}
@@ -262,18 +268,23 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                         {/* Comment Author Decoration */}
                         <div className="flex gap-3">
                           {/* Image */}
-                          <div>
-                            <Image
-                              className="rounded-full"
-                              alt="Profile Picture"
-                              src={ comment.author.image || '/avatar.jpg'}
-                              height={25}
-                              width={25}
-                            ></Image>
-                          </div>
+                          <Link href={`/profile/${comment.author.username}`}>
+                            <div>
+                              <Image
+                                className="rounded-full"
+                                alt="Profile Picture"
+                                src={comment.author.image || "/avatar.jpg"}
+                                height={25}
+                                width={25}
+                              ></Image>
+                            </div>
+                          </Link>
                           {/* Name, username, time */}
                           <div className="flex flex-col lg:flex-row lg:gap-3">
-                            <span>{comment.author.name}</span>
+                            <Link href={`/profile/${comment.author.username}`}>
+                              <span>{comment.author.name}</span>
+                            </Link>
+
                             <div className="flex gap-3">
                               <span className="text-gray-500 text-sm ">
                                 @{comment.author.username}
