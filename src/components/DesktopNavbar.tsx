@@ -14,6 +14,7 @@ const DesktopNavbar = () => {
           <span>Home</span>
         </div>
       </Link>
+      
       {/* If signed In then notification and profile will be show */}
       <SignedIn>
         <Link href="/notifications">

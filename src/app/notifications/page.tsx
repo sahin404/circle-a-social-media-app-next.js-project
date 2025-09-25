@@ -84,31 +84,34 @@ const page = () => {
                     )}
                   </div>
                 </div>
-                {(notification.type === "LIKE" ||
-                  notification.type === "Comment") &&
-                  notification.post && (
-                    <div className="border rounded-md p-2 mb-2 bg-gray-50">
-                      {notification.post.content && (
-                        <p className="text-sm text-gray-700 mb-1">
-                          {notification.post.content}
-                        </p>
-                      )}
-                      {notification.post.Image && (
-                        <img
-                          src={notification.post.Image}
-                          alt="post image"
-                          className="w-full max-h-48 object-cover rounded-md"
-                        />
-                      )}
+                {/* comment and post */}
+                <div>
+                  {/* Comment Content */}
+                  {notification.type === "Comment" && notification.comment && (
+                    <div className="text-sm p-2 ml-2">
+                      {notification.comment.content}
                     </div>
                   )}
-
-                {/* Comment Content */}
-                {notification.type === "Comment" && notification.comment && (
-                  <div className="text-sm text-gray-800 p-2 border rounded-md bg-gray-100">
-                    {notification.comment.content}
-                  </div>
-                )}
+                  {/* Post */}
+                  {(notification.type === "LIKE" ||
+                    notification.type === "Comment") &&
+                    notification.post && (
+                      <div className="border rounded-md p-2 mb-2 bg-gray-600 ml-7">
+                        {notification.post.content && (
+                          <p className="text-sm text-white mb-1">
+                            {notification.post.content}
+                          </p>
+                        )}
+                        {notification.post.Image && (
+                          <img
+                            src={notification.post.Image}
+                            alt="post image"
+                            className="w-full max-h-48 object-cover rounded-md"
+                          />
+                        )}
+                      </div>
+                    )}
+                </div>
               </div>
               <Separator className="my-2" />
             </React.Fragment>
