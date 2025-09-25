@@ -5,7 +5,6 @@ import YouMayFollow from "@/components/YouMayFollow";
 
 export default async function Home() {
   const posts = await getPosts();
-  console.log(posts);
   return (
     <div>
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
@@ -15,7 +14,7 @@ export default async function Home() {
             {/* Posts Section */}
             <div className="px-5 space-y-5 lg:px-0">
               {
-                posts.map((post,id)=><PostCard key={id} post={post}></PostCard>)
+                posts.map((post)=><PostCard key={post.id} post={post}></PostCard>)
               }
             </div>
           </div>

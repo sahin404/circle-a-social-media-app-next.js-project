@@ -16,7 +16,7 @@ const DesktopNavbar = () => {
       </Link>
       {/* If signed In then notification and profile will be show */}
       <SignedIn>
-        <Link href="/">
+        <Link href="/notifications">
           <div className="flex items-center transition-all duration-200 gap-1 text-sm hover:text-blue-600 ">
             <BellIcon className="w-4" />
             <span>Notification</span>
