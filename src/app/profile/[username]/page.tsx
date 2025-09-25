@@ -1,8 +1,9 @@
 import React from 'react'
 
-const page = () => {
+const page = ({params}:{params:{username:string}}) => {
+  
   return (
-    <div>page</div>
+    <div>{params.username}</div>
   )
 }
 
