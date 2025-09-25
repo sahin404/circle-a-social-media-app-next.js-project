@@ -108,7 +108,7 @@ export const likePost = async (postId: string, loggoedInUserId: string) => {
       },
     });
 
-    if(!post) return;
+    if (!post) return;
 
     await prisma.$transaction([
       //create like
@@ -119,17 +119,18 @@ export const likePost = async (postId: string, loggoedInUserId: string) => {
         },
       }),
       //create notification
-      ...(post.authorId !== loggoedInUserId?
-        [
-          prisma.notification.create({
-            data:{
-              userId: post.authorId,
-              creatorId:loggoedInUserId,
-              type:NotificationType.LIKE,
-              postId:postId
-            }
-          })
-        ]:[])   
+      ...(post.authorId !== loggoedInUserId
+        ? [
+            prisma.notification.create({
+              data: {
+                userId: post.authorId,
+                creatorId: loggoedInUserId,
+                type: NotificationType.LIKE,
+                postId: postId,
+              },
+            }),
+          ]
+        : []),
     ]);
   } catch (err) {
     console.log("An error occured to like post!", err);
@@ -165,31 +166,30 @@ export const createComment = async (
 
     if (!post) return;
 
-    await prisma.$transaction([
-      // create comment
-      prisma.comment.create({
+    await prisma.$transaction(async (tx) => {
+      // create comment 
+      const comment = await tx.comment.create({
         data: {
           postId,
           authorId,
           content,
         },
-      }),
-      // create notification (if not self-comment)
-      ...(post.authorId !== authorId
-        ? [
-            prisma.notification.create({
-              data: {
-                userId: post.authorId, 
-                creatorId: authorId,    
-                type: NotificationType.Comment,       
-                postId: postId,
-              },
-            }),
-          ]
-        : []),
-    ]);
+      });
 
-    revalidatePath("/");
+      // create notification only if not self-comment
+      if (post.authorId !== authorId) {
+        await tx.notification.create({
+          data: {
+            userId: post.authorId,
+            creatorId: authorId,
+            type: "Comment",
+            postId: postId,
+            commentId:comment.id
+          },
+        });
+      }
+    });
+    revalidatePath('/');
   } catch (err) {
     console.log("An error Occured to create Comment!", err);
   }

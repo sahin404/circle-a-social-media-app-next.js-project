@@ -273,7 +273,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                           </div>
                           {/* Name, username, time */}
                           <div className="flex flex-col lg:flex-row lg:gap-3">
-                            <span>{post.author.name}</span>
+                            <span>{comment.author.name}</span>
                             <div className="flex gap-3">
                               <span className="text-gray-500 text-sm ">
                                 @{comment.author.username}
