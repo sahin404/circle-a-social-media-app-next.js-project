@@ -1,7 +1,9 @@
 import React from 'react'
 
-const page = ({params}:{params:{username:string}}) => {
-  
+const page = async({params}:{params:{username:string}}) => {
+
+  // const profile =
+
   return (
     <div>{params.username}</div>
   )
