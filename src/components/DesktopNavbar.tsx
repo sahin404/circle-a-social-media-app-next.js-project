@@ -3,8 +3,12 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { BellIcon, House, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { auth } from "@clerk/nextjs/server";
+import { getUserByClerkId } from "@/actions/user.actions";
+import { User } from "@/generated/prisma";
 
-const DesktopNavbar = () => {
+const DesktopNavbar = ({user}:{user:User}) => {
+
   return (
     <div className="hidden lg:flex gap-10 items-center ">
       <ModeToggole></ModeToggole>
@@ -23,7 +27,7 @@ const DesktopNavbar = () => {
             <span>Notification</span>
           </div>
         </Link>
-        <Link href="/">
+        <Link href={`/profile/${user.username}`}>
           <div className="flex items-center transition-all duration-200 gap-1 text-sm hover:text-blue-600 ">
             <UserIcon className="w-4" />
             <span>Profile</span>

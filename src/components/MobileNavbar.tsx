@@ -13,8 +13,9 @@ import { useState } from "react";
 import { useAuth, SignInButton, SignOutButton } from "@clerk/nextjs";
 import ModeToggole from '@/components/ModeToggole'
 import Link from "next/link";
+import { User } from "@/generated/prisma";
 
-function MobileNavbar() {
+function MobileNavbar({user}:{user:User}) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { isSignedIn } = useAuth();
 
@@ -49,7 +50,7 @@ function MobileNavbar() {
                   </Link>
                 </Button>
                 <Button variant="ghost" className="flex items-center gap-3 justify-start" asChild>
-                  <Link href="/profile">
+                  <Link  href={`/profile/${user.username}`}>
                     <UserIcon className="w-4 h-4" />
                     Profile
                   </Link>
