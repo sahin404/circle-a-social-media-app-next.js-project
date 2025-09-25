@@ -1,10 +1,14 @@
 "use client";
 
 import { getNotifications } from "@/actions/notification.actions";
+import NotificationSkeleton from "@/components/NotificationSkeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useEffect, useState } from "react";
+import { Separator } from "@/components/ui/separator";
+import React, { useEffect, useState } from "react";
 
 type NotificationType = {
+  id: string,
+  type:string,
   post: {
     content: string | null;
     Image: string | null;
@@ -38,19 +42,20 @@ const page = () => {
     fetchNotifications();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <NotificationSkeleton />;
   console.log(notifications);
   return (
     <div>
-      <ScrollArea className="h-[200px] w-[350px] rounded-md border p-4">
+      <h4 className="mb-4 text-sm leading-none font-medium">Notifications</h4>
+      <ScrollArea className="h-[100vh] w-full rounded-md border p-4">
         <div className="p-4">
-          <h4 className="mb-4 text-sm leading-none font-medium">Tags</h4>
-          {/* {tags.map((tag) => (
-            <React.Fragment key={tag}>
-              <div className="text-sm">{tag}</div>
+          
+          {notifications.map((notification) => (
+            <React.Fragment key={notification.id}>
+              <div className="text-sm h-56">{notification.type}</div>
               <Separator className="my-2" />
             </React.Fragment>
-          ))} */}
+          ))}
         </div>
       </ScrollArea>
     </div>
