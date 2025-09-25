@@ -31,10 +31,12 @@ export const getNotifications = async() =>{
 
             }
         })
-        
+
+        return {notifications, success:true};
+
     }
     catch(err){
-        console.log('An error occured to fetching notifications');
+        console.log('An error occured to fetching notifications'), err;
         return {success:false};
     }
 }
