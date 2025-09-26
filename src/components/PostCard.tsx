@@ -15,7 +15,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Heart, Loader2Icon, MessageSquare, Send, Trash } from "lucide-react";
-import profilePic from "avatar.jpg";
 import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";

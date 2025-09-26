@@ -1,13 +1,18 @@
 import { getPosts } from "@/actions/post.actions";
 import CreatePost from "@/components/CreatePost";
 import PostCard from "@/components/PostCard";
+import Sidebar from "@/components/Sidebar";
 import YouMayFollow from "@/components/YouMayFollow";
 
 export default async function Home() {
   const posts = await getPosts();
+
   return (
     <div>
-      <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="hidden lg:block lg:col-span-3">
+          <Sidebar></Sidebar>
+        </div>
         <div className="lg:col-span-6">
           <div className="space-y-5">
             <CreatePost />
@@ -19,7 +24,7 @@ export default async function Home() {
             </div>
           </div>
         </div>
-        <div className="sticky top-20 lg:block hidden lg:col-span-4 ">
+        <div className="sticky top-20 lg:block hidden lg:col-span-3 ">
           <YouMayFollow />
         </div>
       </div>
