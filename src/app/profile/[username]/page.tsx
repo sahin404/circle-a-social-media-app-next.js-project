@@ -11,17 +11,17 @@ const page = async ({ params }: { params: { username: string } }) => {
   if (!userProfile) return null;
   console.log(userProfile);
 
-  const cardContent={
+  const cardContent = {
     email: userProfile.email,
     location: userProfile.location,
     website: userProfile.location,
-    createdAt: userProfile.createdAt
-  }
+    createdAt: userProfile.createdAt,
+  };
 
   return (
     <div className="max-w-[1000px] mx-auto">
       <Card>
-        {/* Header */}
+        {/* Cover and Profile */}
         <div className="relative">
           <div>
             <CoverPhoto CI={userProfile.coverImage}></CoverPhoto>
@@ -30,20 +30,31 @@ const page = async ({ params }: { params: { username: string } }) => {
             <ProfilePhoto PI={userProfile.profileImage}></ProfilePhoto>
           </div>
         </div>
+        {/* Name, bio and button section */}
+        <div className="my-5 mt-5 ml-56 flex items-center justify-between mr-16">
+          <div className="flex flex-col">
+            <span className="text-2xl font-bold">{userProfile.name}</span>
+            <span>{userProfile.bio}</span>
+          </div>
+          <div>
+            <button>Unfollow</button>
+          </div>
+        </div>
+
         {/* Content */}
-        <div className="mt-28 p-6 grid gap-6 lg:grid-cols-12">
-          {/*Left  */}
+        <div className="mt-12 p-6 grid gap-6 lg:grid-cols-12">
+          {/*Left: Card */}
           <div className="hidden lg:block lg:col-span-4">
             <Card className="p-2">
-            <ProfileSidebar cardContent={cardContent}></ProfileSidebar>
+              <ProfileSidebar cardContent={cardContent}></ProfileSidebar>
             </Card>
           </div>
-          {/* Right */}
+          {/* Right: Posts */}
           <div className="lg:col-span-8">
             <Card className="p-6 space-y-6">
-            {
-              userProfile.posts.map(post=><PostCard post={post}></PostCard>)
-            }  
+              {userProfile.posts.map((post) => (
+                <PostCard post={post}></PostCard>
+              ))}
             </Card>
           </div>
         </div>

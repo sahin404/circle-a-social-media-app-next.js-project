@@ -9,6 +9,7 @@ const ProfilePhoto = ({ CI }: { CI: string }) => {
         fill
         style={{ objectFit: "cover" }}
       />
+      Md. Sahin 
     </div>
   );
 };
