@@ -2,6 +2,7 @@ import { getUserProfileInfo } from "@/actions/profile.actions";
 import PostCard from "@/components/PostCard";
 import CoverPhoto from "@/components/profile/CoverPhoto";
 import ProfilePhoto from "@/components/profile/ProfilePhoto";
+import ProfileSidebar from "@/components/profile/ProfileSidebar";
 import { Card } from "@/components/ui/card";
 import React from "react";
 
@@ -9,6 +10,14 @@ const page = async ({ params }: { params: { username: string } }) => {
   const userProfile = await getUserProfileInfo(params.username);
   if (!userProfile) return null;
   console.log(userProfile);
+
+  const cardContent={
+    email: userProfile.email,
+    location: userProfile.location,
+    website: userProfile.location,
+    createdAt: userProfile.createdAt
+  }
+
   return (
     <div className="max-w-[1000px] mx-auto">
       <Card>
@@ -25,7 +34,9 @@ const page = async ({ params }: { params: { username: string } }) => {
         <div className="mt-28 p-6 grid gap-6 lg:grid-cols-12">
           {/*Left  */}
           <div className="hidden lg:block lg:col-span-4">
-            <Card>Hello From Bangladesh</Card>
+            <Card className="p-2">
+            <ProfileSidebar cardContent={cardContent}></ProfileSidebar>
+            </Card>
           </div>
           {/* Right */}
           <div className="lg:col-span-8">
