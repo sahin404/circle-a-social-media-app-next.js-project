@@ -1,14 +1,17 @@
 import { getUserProfileInfo } from "@/actions/profile.actions";
+import PostCard from "@/components/PostCard";
 import { Card } from "@/components/ui/card";
 import React from "react";
 
 const page = async ({ params }: { params: { username: string } }) => {
   const userProfile = await getUserProfileInfo(params.username);
-  console.log(userProfile);
-
+  if(!userProfile) return null;
+  console.log(userProfile?.posts);
   return (
     <div className="max-w-[1000px] mx-auto">
-      <Card>{params.username}</Card>
+      <Card>
+        
+      </Card>
     </div>
   );
 };
