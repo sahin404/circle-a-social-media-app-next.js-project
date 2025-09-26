@@ -22,7 +22,7 @@ const YouMayFollow = async () => {
               <div className="flex items-center gap-1">
                 <Link href={`/profile/${user.username}`}>
                   <Avatar>
-                    <AvatarImage src={user.image || "avatar.jpg"} />
+                    <AvatarImage src={user.profileImage || "avatar.jpg"} />
                   </Avatar>
                 </Link>
                 <div className="text-xs">

@@ -36,7 +36,7 @@ type PostWithAuthor = Post & {
     id: string;
     name: string;
     username: string;
-    image: string;
+    profileImage: string;
   };
   _count: {
     likes: number;
@@ -50,7 +50,7 @@ type PostWithAuthor = Post & {
     author: {
       name: string;
       username: string;
-      image: string;
+      profileImage: string;
     };
   }[];
 };
@@ -145,7 +145,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                   <Image
                     className="rounded-full"
                     alt="user dp"
-                    src={post.author.image || "/avatar.jpg"}
+                    src={post.author.profileImage || "/avatar.jpg"}
                     height={40}
                     width={40}
                   ></Image>
@@ -272,7 +272,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                               <Image
                                 className="rounded-full"
                                 alt="Profile Picture"
-                                src={comment.author.image || "/avatar.jpg"}
+                                src={comment.author.profileImage || "/avatar.jpg"}
                                 height={25}
                                 width={25}
                               ></Image>
@@ -314,7 +314,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                         className="rounded-full"
                         height={30}
                         width={30}
-                        src={loggedInUser.image || "/avatar.jpg"}
+                        src={loggedInUser.profileImage || "/avatar.jpg"}
                         alt="user Image"
                       />
                     </div>

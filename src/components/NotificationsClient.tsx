@@ -19,7 +19,7 @@ type NotificationType = {
   creator: {
     username: string;
     name: string | null;
-    image: string | null;
+    profileImage: string | null;
   };
 };
 
@@ -63,7 +63,7 @@ const NotificationsClient = () => {
                       height={30}
                       width={30}
                       className="rounded-full"
-                      src={notification.creator.image || "/avatar.jpg"}
+                      src={notification.creator.profileImage || "/avatar.jpg"}
                       alt={notification.creator.username}
                     ></Image>
                   </div>

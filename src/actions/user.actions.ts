@@ -25,12 +25,9 @@ export const syncUser = async () => {
       data: {
         clerkId: userId,
         name: `${user.firstName || ""} ${user.lastName || ""}`,
-        username: `${
-          user.username
-            ? user.username
-            : user.emailAddresses[0].emailAddress.split("@")[0]
-        }`,
-        image: user.imageUrl,
+        username: `${ user.username ? user.username : user.emailAddresses[0].emailAddress.split("@")[0]}`,
+        profileImage: '/avatar.jpg',
+        coverImage: '/avatar.jpg',
         email: user.emailAddresses[0].emailAddress,
       },
     });
@@ -103,7 +100,7 @@ export const getRandomUsers = async () => {
         id: true,
         name: true,
         username: true,
-        image: true,
+        profileImage: true,
         _count: {
           select: {
             followers: true,

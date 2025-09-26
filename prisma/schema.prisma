@@ -20,7 +20,8 @@ model User {
   username  String   @unique
   clerkId   String   @unique
   name      String?
-  image     String?
+  profileImage     String?
+  coverImage       String?
   bio       String?
   location  String?
   website   String?

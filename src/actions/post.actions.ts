@@ -39,7 +39,7 @@ export const getPosts = async () => {
         author: {
           select: {
             id: true,
-            image: true,
+            profileImage: true,
             name: true,
             username: true,
           },
@@ -55,7 +55,7 @@ export const getPosts = async () => {
               select: {
                 name: true,
                 username: true,
-                image: true,
+                profileImage: true,
               },
             },
           },
@@ -182,7 +182,7 @@ export const createComment = async (
           data: {
             userId: post.authorId,
             creatorId: authorId,
-            type: "Comment",
+            type: "COMMENT",
             postId: postId,
             commentId:comment.id
           },

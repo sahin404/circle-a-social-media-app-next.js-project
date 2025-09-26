@@ -12,7 +12,7 @@ export const getNotifications = async() =>{
             include:{
                 creator:{
                     select:{
-                        image:true,
+                        profileImage:true,
                         username:true,
                         name:true,
                     }

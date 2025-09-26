@@ -31,7 +31,7 @@ const Sidebar = async () => {
             className="rounded-full"
             width={100}
             height={100}
-            src={dbUser?.image || "avatar.jpg"}
+            src={dbUser?.profileImage || "avatar.jpg"}
             alt="Profile Picture"
           />
           </Link>
