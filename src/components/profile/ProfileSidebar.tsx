@@ -11,22 +11,22 @@ const ProfileSidebar = ({
   };
 }) => {
   return (
-    <div className="bg-white rounded-2xl p-4 space-y-4">
+    <div className="rounded-2xl p-4 space-y-4">
       {/* Email */}
-      <div className="flex items-center gap-3 text-gray-700">
-        <Mail className="w-5 h-5 text-gray-500" />
+      <div className="flex items-center gap-3">
+        <Mail className="w-5 h-5 " />
         <span>{cardContent.email || "Not provided"}</span>
       </div>
 
       {/* Location */}
-      <div className="flex items-center gap-3 text-gray-700">
-        <MapPin className="w-5 h-5 text-gray-500" />
+      <div className="flex items-center gap-3">
+        <MapPin className="w-5 h-5 " />
         <span>{cardContent.location || "No location set"}</span>
       </div>
 
       {/* Website */}
-      <div className="flex items-center gap-3 text-gray-700">
-        <Globe className="w-5 h-5 text-gray-500" />
+      <div className="flex items-center gap-3">
+        <Globe className="w-5 h-5" />
         <a
           href={cardContent.website || "#"}
           target="_blank"
@@ -38,8 +38,8 @@ const ProfileSidebar = ({
       </div>
 
       {/* Join Date */}
-      <div className="flex items-center gap-3 text-gray-700">
-        <Calendar className="w-5 h-5 text-gray-500" />
+      <div className="flex items-center gap-3 ">
+        <Calendar className="w-5 h-5" />
         <span>
           Joined {format(new Date(cardContent.createdAt), "MMMM yyyy")}
         </span>
