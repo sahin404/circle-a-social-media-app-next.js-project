@@ -1,3 +1,4 @@
+"use client"
 import ModeToggole from "@/components/ModeToggole";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { BellIcon, House, UserIcon } from "lucide-react";

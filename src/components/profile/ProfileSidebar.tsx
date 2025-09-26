@@ -1,3 +1,4 @@
+"use client"
 import { Mail, MapPin, Globe, Calendar } from "lucide-react";
 import { format } from "date-fns";
 const ProfileSidebar = ({

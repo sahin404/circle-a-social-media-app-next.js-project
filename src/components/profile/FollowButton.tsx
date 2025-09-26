@@ -1,6 +1,12 @@
+"use client"
+
+import { Button } from "../ui/button"
+
 const FollowButton = () => {
   return (
-    <div>FollowButton</div>
+    <div>
+      <Button variant={"secondary"}>Follow</Button>
+    </div>
   )
 }
 
