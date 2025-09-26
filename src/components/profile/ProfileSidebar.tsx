@@ -1,7 +1,9 @@
 
 const ProfileSidebar = () => {
   return (
-    <div>ProfileSidebar</div>
+    <div>
+      
+    </div>
   )
 }
 
