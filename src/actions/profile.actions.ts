@@ -64,7 +64,7 @@ export const checkFollowExistance = async(targetUserId:string)=>{
   const loggedInUserId = await getUserIdFromDb();
   if(!loggedInUserId || !targetUserId) return null;
   try{
-    const result = prisma.follow.findUnique({
+    const result = await prisma.follow.findUnique({
       where:{
         followerId_followingId:{
           followerId:loggedInUserId,
