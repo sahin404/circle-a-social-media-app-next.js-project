@@ -61,7 +61,7 @@ const page = async ({ params }: { params: { username: string } }) => {
               </span>
               <span>{userProfile?.bio}</span>
             </div>
-            <div>
+            <div className="ml-64 -mt-20">
               {loggedInUser.id===userProfile.id?<EditProfile></EditProfile>:<FollowButton userProfileId = {userProfile.id || ""}></FollowButton>}
             </div>
           </div>

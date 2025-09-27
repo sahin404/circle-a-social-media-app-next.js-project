@@ -9,15 +9,27 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { useState } from "react";
-import { useAuth, SignInButton, SignOutButton } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
+import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import ModeToggole from '@/components/ModeToggole'
 import Link from "next/link";
-import { User } from "@/generated/prisma";
+import { getUserByClerkId } from "@/actions/user.actions";
 
-function MobileNavbar({user}:{user:User}) {
+function MobileNavbar() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const { isSignedIn } = useAuth();
+  const {user} = useUser();
+    const [dbUser,setDbUser] = useState([]);
+    useEffect(() => {
+      if (!user?.id) return; // wait until user exists
+  
+      const fetchDbUser = async () => {
+        const fetchedUser = await getUserByClerkId(user.id);
+        // console.log("Fetched dbUser:", fetchedUser);
+        if (fetchedUser) setDbUser(fetchedUser);
+      };
+  
+      fetchDbUser();
+    }, [user?.id]);
 
   return (
     <div className="flex md:hidden items-center space-x-2">
@@ -41,7 +53,7 @@ function MobileNavbar({user}:{user:User}) {
               </Link>
             </Button>
 
-            {isSignedIn ? (
+            {user ? (
               <>
                 <Button variant="ghost" className="flex items-center gap-3 justify-start" asChild>
                   <Link href="/notifications">
@@ -50,7 +62,7 @@ function MobileNavbar({user}:{user:User}) {
                   </Link>
                 </Button>
                 <Button variant="ghost" className="flex items-center gap-3 justify-start" asChild>
-                  <Link  href={`/profile/${user.username}`}>
+                  <Link  href={`/profile/${dbUser.username}`}>
                     <UserIcon className="w-4 h-4" />
                     Profile
                   </Link>

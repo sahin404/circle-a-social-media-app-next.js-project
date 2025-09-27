@@ -1,14 +1,27 @@
 "use client"
 import ModeToggole from "@/components/ModeToggole";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { BellIcon, House, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { auth } from "@clerk/nextjs/server";
+import { useEffect, useState } from "react";
 import { getUserByClerkId } from "@/actions/user.actions";
-import { User } from "@/generated/prisma";
 
-const DesktopNavbar = ({user}:{user:User}) => {
+const DesktopNavbar = () => {
+  const {user} = useUser();
+  const [dbUser,setDbUser] = useState([]);
+  useEffect(() => {
+    if (!user?.id) return; // wait until user exists
+
+    const fetchDbUser = async () => {
+      const fetchedUser = await getUserByClerkId(user.id);
+      // console.log("Fetched dbUser:", fetchedUser);
+      if (fetchedUser) setDbUser(fetchedUser);
+    };
+
+    fetchDbUser();
+  }, [user?.id]);
+
 
   return (
     <div className="hidden lg:flex gap-10 items-center ">
@@ -28,7 +41,7 @@ const DesktopNavbar = ({user}:{user:User}) => {
             <span>Notification</span>
           </div>
         </Link>
-        <Link href={`/profile/${user.username}`}>
+        <Link href={`/profile/${dbUser?.username}`}>
           <div className="flex items-center transition-all duration-200 gap-1 text-sm hover:text-blue-600 ">
             <UserIcon className="w-4" />
             <span>Profile</span>
