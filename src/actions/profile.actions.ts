@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { getUserIdFromDb } from "./user.actions";
 
 export const getUserProfileInfo = async (username: string) => {
   try {
@@ -58,3 +59,28 @@ export const getUserProfileInfo = async (username: string) => {
     return null;
   }
 };
+
+export const checkFollowExistance = async(targetUserId:string)=>{
+  const loggedInUserId = await getUserIdFromDb();
+  if(!loggedInUserId || !targetUserId) return null;
+  try{
+    const result = prisma.follow.findUnique({
+      where:{
+        followerId_followingId:{
+          followerId:loggedInUserId,
+          followingId:targetUserId,
+        }
+      }
+    })
+    if(!result){
+      return {find:false};
+    }
+    return {find:true}
+    
+  }
+  catch(err){
+    console.log('An error occured to check if two id following or not.', err);
+    return {find:false};
+  }
+  
+}

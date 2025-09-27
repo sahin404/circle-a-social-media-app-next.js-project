@@ -50,7 +50,7 @@ const page = async ({ params }: { params: { username: string } }) => {
               <span>{userProfile?.bio}</span>
             </div>
             <div>
-              {loggedInUser.id===userProfile.id?<EditProfile></EditProfile>:<FollowButton></FollowButton>}
+              {loggedInUser.id===userProfile.id?<EditProfile></EditProfile>:<FollowButton userProfileId = {userProfile.id || ""}></FollowButton>}
             </div>
           </div>
           {/* for small devices */}
@@ -61,8 +61,8 @@ const page = async ({ params }: { params: { username: string } }) => {
               </span>
               <span>{userProfile?.bio}</span>
             </div>
-            <div className="ml-64 -mt-[88px]">
-              <button className="p-2 border">Unfollow</button>
+            <div>
+              {loggedInUser.id===userProfile.id?<EditProfile></EditProfile>:<FollowButton userProfileId = {userProfile.id || ""}></FollowButton>}
             </div>
           </div>
         </div>
