@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 const FollowButton = ({ userProfileId }: { userProfileId: string }) => {
   const [isAlreadyFollowed, setIsAlreadyFollowed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  
   useEffect(() => {
     const isFollowed = async () => {
       const result = await checkFollowExistance(userProfileId);
