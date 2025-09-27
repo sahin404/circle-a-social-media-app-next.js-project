@@ -164,6 +164,7 @@ export const toggoleFollow = async (targetId: string) => {
       });
     }
     revalidatePath("/");
+    revalidatePath('/profile')
   } catch (err) {
     console.log("An error occured to toggole follow", err);
   }
