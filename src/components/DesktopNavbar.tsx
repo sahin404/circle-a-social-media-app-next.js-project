@@ -1,6 +1,12 @@
-"use client"
+"use client";
 import ModeToggole from "@/components/ModeToggole";
-import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+  useUser,
+} from "@clerk/nextjs";
 import { BellIcon, House, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
@@ -8,8 +14,8 @@ import { useEffect, useState } from "react";
 import { getUserByClerkId } from "@/actions/user.actions";
 
 const DesktopNavbar = () => {
-  const {user} = useUser();
-  const [dbUser,setDbUser] = useState([]);
+  const { user } = useUser();
+  const [dbUser, setDbUser] = useState([]);
   useEffect(() => {
     if (!user?.id) return; // wait until user exists
 
@@ -22,7 +28,6 @@ const DesktopNavbar = () => {
     fetchDbUser();
   }, [user?.id]);
 
-
   return (
     <div className="hidden lg:flex gap-10 items-center ">
       <ModeToggole></ModeToggole>
@@ -32,7 +37,7 @@ const DesktopNavbar = () => {
           <span>Home</span>
         </div>
       </Link>
-      
+
       {/* If signed In then notification and profile will be show */}
       <SignedIn>
         <Link href="/notifications">
