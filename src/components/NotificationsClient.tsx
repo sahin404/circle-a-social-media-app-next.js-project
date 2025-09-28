@@ -44,7 +44,7 @@ const NotificationsClient = () => {
   }, []);
 
   if (loading) return <NotificationSkeleton />;
-  console.log(notifications);
+  // console.log(notifications);
 
   return (
     <div>

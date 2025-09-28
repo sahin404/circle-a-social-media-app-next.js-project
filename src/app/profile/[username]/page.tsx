@@ -1,5 +1,6 @@
 import { getUserProfileInfo } from "@/actions/profile.actions";
 import { getUserByClerkId } from "@/actions/user.actions";
+import CustomUnauthorized from "@/components/CustomUnauthorized";
 import CoverPhoto from "@/components/profile/CoverPhoto";
 import EditProfile from "@/components/profile/EditProfile";
 import FollowButton from "@/components/profile/FollowButton";
@@ -7,17 +8,18 @@ import ProfilePhoto from "@/components/profile/ProfilePhoto";
 import ProfilePostSection from "@/components/profile/ProfilePostSection";
 import ProfileSidebar from "@/components/profile/ProfileSidebar";
 import { Card } from "@/components/ui/card";
+import UnAuthenticatedSidebar from "@/components/UnAuthenticatedSidebar";
 import { auth } from "@clerk/nextjs/server";
 import React from "react";
 
 const page = async ({ params }: { params: { username: string } }) => {
   const userProfile = await getUserProfileInfo(params.username);
-  if (!userProfile || !userProfile.posts) return null;
+  if (!userProfile || !userProfile.posts) return <CustomUnauthorized></CustomUnauthorized>
   // console.log(userProfile);
   const {userId} = await auth()
-  if(!userId) return null;
+  if(!userId) return <CustomUnauthorized></CustomUnauthorized>
   const loggedInUser = await getUserByClerkId(userId);
-  if(!loggedInUser) return null;
+  if(!loggedInUser) return <CustomUnauthorized></CustomUnauthorized>
   //Create object to send profile sidebar
   const cardContent = {
     email: userProfile.email || "",
