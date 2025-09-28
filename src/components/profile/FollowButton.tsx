@@ -8,16 +8,30 @@ import { Loader2Icon } from "lucide-react";
 import toast from "react-hot-toast";
 
 const FollowButton = ({ userProfileId }: { userProfileId: string }) => {
-  const [isAlreadyFollowed, setIsAlreadyFollowed] = useState(false);
+  const [isAlreadyFollowed, setIsAlreadyFollowed] = useState<boolean | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
-  
+
   useEffect(() => {
     const isFollowed = async () => {
-      const result = await checkFollowExistance(userProfileId);
-      setIsAlreadyFollowed(!!result?.find);
+      try {
+        const result = await checkFollowExistance(userProfileId);
+        setIsAlreadyFollowed(!!result?.find);
+      } catch (err) {
+        console.error("Follow check failed", err);
+      }
     };
     isFollowed();
   }, [userProfileId]);
+  
+  if (isAlreadyFollowed === null) {
+    return (
+      <Button variant="secondary" disabled>
+        <Loader2Icon className="animate-spin" />
+      </Button>
+    );
+  }
 
   const handleFollow = async () => {
     try {
