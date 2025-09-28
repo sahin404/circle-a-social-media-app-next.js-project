@@ -25,10 +25,10 @@ export const postContent = async (content: string, Image: string) => {
 };
 
 export const getPosts = async () => {
-  const { userId } = await auth();
-  if (!userId) return [];
-  const dbUser = await getUserByClerkId(userId);
-  if (!dbUser) return [];
+  // const { userId } = await auth();
+  // if (!userId) return [];
+  // const dbUser = await getUserByClerkId(userId);
+  // if (!dbUser) return [];
 
   try {
     const posts = await prisma.post.findMany({

@@ -1,4 +1,5 @@
-import { SignInButton, SignUpButton } from "@clerk/nextjs";
+'use client'
+import { SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -8,7 +9,10 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Separator } from "./ui/separator";
+import PostSkeleton from "./PostSkeleton";
 const UnAuthenticatedSidebar = () => {
+  const {isLoaded} = useUser();
+  if(!isLoaded) return null;
   return (
     <div>
       <Card>

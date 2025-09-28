@@ -11,12 +11,14 @@ import { postContent } from "@/actions/post.actions";
 import toast from "react-hot-toast";
 
 const CreatePost = () => {
-  const { user } = useUser();
+  const { isLoaded, user } = useUser();
 
   const [content, setContent] = useState("");
   const [imageLink, setImageLink] = useState("");
   const [isPosting, setIsPosting] = useState(false);
   const [showImageUpload, setShowImageUpload] = useState(false);
+
+  if(!user) return null;
 
   //handle submit
   const handleSubmit = async () => {

@@ -1,5 +1,5 @@
 "use client";
-import { Comment, Post, User } from "@/generated/prisma";
+import { Post, User } from "@/generated/prisma";
 import { Card } from "./ui/card";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
@@ -17,7 +17,7 @@ import {
 import { Heart, Loader2Icon, MessageSquare, Send, Trash } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
-import { useUser } from "@clerk/nextjs";
+import { useClerk, useUser } from "@clerk/nextjs";
 import { getUserByClerkId } from "@/actions/user.actions";
 import {
   createComment,
@@ -63,6 +63,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
   const [hasLiked, setHasLiked] = useState(false);
   const [comment, setComment] = useState("");
   const [commenting, setCommenting] = useState(false);
+  const { openSignIn } = useClerk();
 
   const { user } = useUser();
   const { theme } = useTheme();
@@ -85,11 +86,14 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
     setHasLiked(result);
   }, [loggedInUser, post.likes]);
 
-  if (!loggedInUser) return null;
 
   // Handle Delete Button
   const handleDelete = async () => {
     try {
+      if(!loggedInUser){
+        openSignIn({});
+        return;
+      }
       const result = await deletePost(post.id);
       if (result.success) {
         toast.success("Successfully deleted the post!");
@@ -103,6 +107,10 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
 
   // Handle Like
   const handleLike = async () => {
+    if (!loggedInUser) {
+      openSignIn({}); //if user not logged in but try to like then open login modal
+      return;
+    }
     if (hasLiked) {
       setHasLiked(!hasLiked);
       setLikeFill(!likeFill);
@@ -121,6 +129,10 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
   // Handle Comments
   const handleComment = async () => {
     if (commenting) return;
+    if (!loggedInUser) {
+      openSignIn({}); //if user not logged in but try to comment then open login modal
+      return;
+    }
     try {
       setCommenting(true);
       await createComment(post.id, loggedInUser.id, comment);
@@ -172,7 +184,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
             </div>
             {/* Delete Button */}
             <div>
-              {loggedInUser.id === post.author.id ? (
+              {loggedInUser?.id === post.author.id ? (
                 <div>
                   <AlertDialog>
                     <AlertDialogTrigger>
@@ -272,7 +284,9 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                               <Image
                                 className="rounded-full"
                                 alt="Profile Picture"
-                                src={comment.author.profileImage || "/avatar.jpg"}
+                                src={
+                                  comment.author.profileImage || "/avatar.jpg"
+                                }
                                 height={25}
                                 width={25}
                               ></Image>
@@ -307,7 +321,8 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                   ))}
                 </div>
                 {/* Create Comment */}
-                <div className="flex flex-col mt-10">
+                {
+                  loggedInUser && <div className="flex flex-col mt-10">
                   <div className="flex space-x-3">
                     <div>
                       <Image
@@ -347,6 +362,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                     </Button>
                   </div>
                 </div>
+                }
               </div>
             </div>
           )}
