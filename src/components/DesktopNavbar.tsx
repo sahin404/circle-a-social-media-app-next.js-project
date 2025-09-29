@@ -4,18 +4,27 @@ import {
   SignedIn,
   SignedOut,
   SignInButton,
-  UserButton,
+  useClerk,
   useUser,
 } from "@clerk/nextjs";
-import { BellIcon, House, UserIcon } from "lucide-react";
+import { BellIcon, House, Loader2Icon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { getUserByClerkId } from "@/actions/user.actions";
+import Image from "next/image";
+
+type dbUser = {
+  username: string;
+  profileImage: string;
+};
 
 const DesktopNavbar = () => {
   const { user } = useUser();
-  const [dbUser, setDbUser] = useState([]);
+  const [dbUser, setDbUser] = useState<dbUser | null>(null);
+  const [isOpenLogout, setIsOpenLogout] = useState(false);
+  const { signOut } = useClerk();
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (!user?.id) return; // wait until user exists
 
@@ -27,6 +36,21 @@ const DesktopNavbar = () => {
 
     fetchDbUser();
   }, [user?.id]);
+
+    const handleLogout = async () => {
+      try{
+        setIsLoading(true);
+        await signOut();
+      }
+      catch(err){
+
+      }
+      finally{
+        setIsLoading(false);
+      }
+      
+    };
+
 
   return (
     <div className="hidden lg:flex gap-10 items-center ">
@@ -61,7 +85,27 @@ const DesktopNavbar = () => {
           </SignInButton>
         </SignedOut>
         <SignedIn>
-          <UserButton />
+          <div>
+            <div className="relative">
+              <button onClick={() => setIsOpenLogout(!isOpenLogout)}>
+                <Image
+                  className="rounded-full"
+                  height={30}
+                  width={30}
+                  src={dbUser?.profileImage || "/avatar.jpg"}
+                  alt={"profile picture"}
+                ></Image>
+              </button>
+              {/* Logout Button */}
+              {isOpenLogout && (
+                <div className="absolute text-sm -left-12 mt-3 bg-gray-500 px-3 py-2 rounded bg-opacity-70">
+                  <button onClick={handleLogout}>
+                    {isLoading? <Loader2Icon className="animate-spin"></Loader2Icon> : "Logout"}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </SignedIn>
       </div>
     </div>
