@@ -8,18 +8,48 @@ import ProfilePhoto from "@/components/profile/ProfilePhoto";
 import ProfilePostSection from "@/components/profile/ProfilePostSection";
 import ProfileSidebar from "@/components/profile/ProfileSidebar";
 import { Card } from "@/components/ui/card";
-import UnAuthenticatedSidebar from "@/components/UnAuthenticatedSidebar";
 import { auth } from "@clerk/nextjs/server";
 import React from "react";
+
+export async function generateMetadata({ params }: { params: { username: string } }){
+  const userProfile = await getUserProfileInfo(params.username);
+  const {userId} = await auth();
+  if(!userProfile || !userId){
+    return{
+      title:'Circle | Not Found',
+      description:'This user is not Found!'
+    }
+  }
+
+  return{
+    title:`Circle | ${userProfile.name}`,
+    openGraph:{
+      title: `Circle | ${userProfile.name}`,
+      images:[
+        {
+          url: userProfile.profileImage || "/avatar.jpg",
+          width: 400,
+          height: 400,
+          alt: `${userProfile.name}`,
+        },
+      ]
+    }
+  }
+}
+
+
+
 
 const page = async ({ params }: { params: { username: string } }) => {
   const userProfile = await getUserProfileInfo(params.username);
   if (!userProfile || !userProfile.posts) return <CustomUnauthorized></CustomUnauthorized>
-  // console.log(userProfile);
+
   const {userId} = await auth()
   if(!userId) return <CustomUnauthorized></CustomUnauthorized>
+  
   const loggedInUser = await getUserByClerkId(userId);
   if(!loggedInUser) return <CustomUnauthorized></CustomUnauthorized>
+  
   //Create object to send profile sidebar
   const cardContent = {
     email: userProfile.email || "",
@@ -29,6 +59,7 @@ const page = async ({ params }: { params: { username: string } }) => {
       ? new Date(userProfile.createdAt).toISOString()
       : "",
   };
+  
 
   return (
     <div className="max-w-[1000px] mx-auto">

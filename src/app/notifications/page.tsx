@@ -2,7 +2,11 @@ import { getUserIdFromDb } from "@/actions/user.actions";
 import CustomUnauthorized from "@/components/CustomUnauthorized";
 import NotificationsClient from "@/components/NotificationsClient";
 import Sidebar from "@/components/Sidebar";
-import { useEffect } from "react";
+import { Metadata } from "next";
+
+export const metadata:Metadata={
+  title:'Circle | Notifications'
+}
 
 const page = async() => {
   const dbUser  = await getUserIdFromDb();
