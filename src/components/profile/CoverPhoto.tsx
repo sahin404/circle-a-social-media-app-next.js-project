@@ -3,11 +3,13 @@ import { ImageUp } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { Button } from "../ui/button";
+import toast from "react-hot-toast";
 
-const CoverPhoto = ({ CI }: { CI: string }) => {
+const CoverPhoto = ({ CI, id }: { CI: string, id:string }) => {
   const uploadRef = useRef();
   const [preview, setPreview] = useState<string | null>(null);
   const [showButton, setShowButton] = useState<boolean | null>(false);
+ const [loadingButton, setLoadingButton] = useState<boolean | null>(false);
 
   const handleButtonClick = () => {
     uploadRef.current?.click();
@@ -25,6 +27,42 @@ const CoverPhoto = ({ CI }: { CI: string }) => {
     setPreview(null);
     setShowButton(false);
   }
+
+    // Save to Cloudinary and Database
+  const handleSave = async () => {
+    const image = uploadRef.current?.files?.[0];
+    if (!image) return;
+    const formData = new FormData();
+    formData.append("file", image);
+    try {
+      setLoadingButton(true);
+      const res = await fetch("/api/upload/cloudinary", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.url) {
+        console.log("Uploaded image in coudinary URL:", data.url);
+        // save to database
+        const res = await uploadCoverPicture(data.url, id);
+        if (res) toast.success("Updated Cover Picture Successfully!");
+        else {
+          toast.error("Something went wront!");
+        }
+      } else {
+        toast.error("Something went wront!");
+      }
+      setPreview(data.url);
+    } 
+    catch (err) {
+      console.error(err);
+      toast.error("Something went wront!");
+    } 
+    finally {
+      setLoadingButton(false);
+      setShowButton(false);
+    }
+  };
 
   return (
     <div>
