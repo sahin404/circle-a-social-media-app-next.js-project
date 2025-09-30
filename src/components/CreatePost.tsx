@@ -5,7 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { Textarea } from "./ui/textarea";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
-import { ImageIcon, Loader2Icon, Send } from "lucide-react";
+import { ImageIcon, Loader2Icon, Send, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { postContent } from "@/actions/post.actions";
 import toast from "react-hot-toast";
@@ -96,12 +96,15 @@ const CreatePost = () => {
 
         {/* Image Preview */}
         {preview && (
-          <div className="p-2">
+          <div className="p-2 relative">
             <img
               src={preview}
               alt="post image"
               className="max-h-40 w-auto rounded-md"
             />
+            <div className=" absolute left-1 top-1">
+              <button onClick={()=>setPreview(null)} className="bg-red-500 p-1 rounded-full"><X /></button>
+            </div>
             <div className="my-2">
               <Separator />
             </div>
