@@ -1,9 +1,10 @@
 "use client";
-import { ImageUp } from "lucide-react";
+import { ImageUp, Loader2, Loader2Icon } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
+import { uploadCoverPicture } from "@/actions/uploads.actions";
 
 const CoverPhoto = ({ CI, id }: { CI: string, id:string }) => {
   const uploadRef = useRef();
@@ -83,7 +84,11 @@ const CoverPhoto = ({ CI, id }: { CI: string, id:string }) => {
           {showButton ? (
             <div className="flex gap-2">
               <Button onClick={handleDismiss} className="text-white" variant={"outline"}>Dismiss</Button>
-              <Button className="bg-green-500 hover:bg-green-600">Save</Button>
+               <Button onClick={handleSave} className="bg-green-500 hover:bg-green-600">
+                {
+                  loadingButton? <div> <Loader2Icon className="animate-spin"></Loader2Icon> </div>:<div>Save</div>
+                }
+               </Button>
             </div>
           ) : (
             <div>

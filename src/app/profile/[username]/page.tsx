@@ -67,7 +67,7 @@ const page = async ({ params }: { params: { username: string } }) => {
         {/* Cover and Profile */}
         <div className="relative">
           <div>
-            <CoverPhoto CI={userProfile.coverImage || ""}></CoverPhoto>
+            <CoverPhoto CI={userProfile.coverImage || ""} id={userProfile.id}></CoverPhoto>
           </div>
           <div className="absolute top-44 sm:top-56 md:top-64 left-6 sm:left-12">
             <ProfilePhoto id={userProfile.id}  PI={userProfile.profileImage || ""}></ProfilePhoto>
