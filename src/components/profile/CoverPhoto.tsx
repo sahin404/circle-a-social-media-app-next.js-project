@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { uploadCoverPicture } from "@/actions/uploads.actions";
 
 const CoverPhoto = ({ CI, id }: { CI: string, id:string }) => {
-  const uploadRef = useRef();
+  const uploadRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [showButton, setShowButton] = useState<boolean | null>(false);
  const [loadingButton, setLoadingButton] = useState<boolean | null>(false);
