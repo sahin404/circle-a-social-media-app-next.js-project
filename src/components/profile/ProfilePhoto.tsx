@@ -1,8 +1,18 @@
 "use client";
 import { ImageUp } from "lucide-react";
 import Image from "next/image";
+import { useRef } from "react";
 
 const ProfilePhoto = ({ PI }: { PI: string }) => {
+  const uploadPhotoRef = useRef<HTMLInputElement | null>(null);
+
+  const handleIconClick = () =>{
+    uploadPhotoRef.current?.click();
+  }
+
+  const handleUpload = (e:any)=>{
+      
+  }
   return (
     <div className="relative">
       <div className="relative h-24 w-24 md:h-32 md:w-32 lg:h-40 lg:w-40 rounded-full border-4 border-white overflow-hidden shadow-lg">
@@ -13,9 +23,19 @@ const ProfilePhoto = ({ PI }: { PI: string }) => {
           style={{ objectFit: "cover" }}
         />
       </div>
-      
-      <div className="absolute right-2 bottom-3 bg-black bg-opacity-70 p-2 rounded-full">
+
+      <div onClick={handleIconClick}  className="hover:cursor-pointer absolute right-2 bottom-3 bg-black bg-opacity-70 p-2 rounded-full">
         <ImageUp></ImageUp>
+      </div>
+      {/* choosen file component */}
+      <div>
+        <input 
+        ref={uploadPhotoRef} 
+        className="hidden" 
+        type="file" 
+        accept="image/*"
+        onChange={handleUpload}
+        />
       </div>
     </div>
   );
