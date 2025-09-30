@@ -94,7 +94,7 @@ const CoverPhoto = ({ CI, id }: { CI: string, id:string }) => {
             <div>
               <button
                 onClick={handleButtonClick}
-                className="flex gap-1 items-center"
+                className="flex gap-1 items-center text-[11px] sm:text-xs md:text-sm"
               >
                 <ImageUp></ImageUp>
                 Edit Cover Photo
