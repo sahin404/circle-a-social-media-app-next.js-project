@@ -12,6 +12,7 @@ import { auth } from "@clerk/nextjs/server";
 import { CameraOff } from "lucide-react";
 import React from "react";
 
+// metadata
 export async function generateMetadata({ params }: { params: { username: string } }){
   const userProfile = await getUserProfileInfo(params.username);
   const {userId} = await auth();
@@ -37,8 +38,6 @@ export async function generateMetadata({ params }: { params: { username: string 
     }
   }
 }
-
-
 
 
 const page = async ({ params }: { params: { username: string } }) => {
@@ -71,7 +70,7 @@ const page = async ({ params }: { params: { username: string } }) => {
             <CoverPhoto CI={userProfile.coverImage || ""}></CoverPhoto>
           </div>
           <div className="absolute top-44 sm:top-56 md:top-64 left-6 sm:left-12">
-            <ProfilePhoto PI={userProfile.profileImage || ""}></ProfilePhoto>
+            <ProfilePhoto id={userProfile.id}  PI={userProfile.profileImage || ""}></ProfilePhoto>
           </div>
         </div>
         {/* Name, bio and button section */}

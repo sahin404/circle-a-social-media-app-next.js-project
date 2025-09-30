@@ -3,15 +3,14 @@ import { ImageUp } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { Button } from "../ui/button";
+import { uploadProfilePicture } from "@/actions/uploads.actions";
+import toast from "react-hot-toast";
 
-interface ProfilePhotoProps {
-  PI: string;
-}
 
-const ProfilePhoto = ({ PI }: ProfilePhotoProps) => {
+const ProfilePhoto = ({ PI , id }: {PI:string , id:string}) => {
   const uploadPhotoRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-
+  const [showButton, setShowButton] = useState<boolean | null>(false);
   const handleIconClick = () => {
     uploadPhotoRef.current?.click();
   };
@@ -21,11 +20,13 @@ const ProfilePhoto = ({ PI }: ProfilePhotoProps) => {
     if (image) {
       const previewUrl = URL.createObjectURL(image);
       setPreview(previewUrl);
+      setShowButton(true);
     }
   };
 
   const handleDismiss = () => {
     setPreview(null);
+    setShowButton(false);
   };
 
   // Save to Cloudinary
@@ -42,14 +43,22 @@ const ProfilePhoto = ({ PI }: ProfilePhotoProps) => {
       });
       const data = await res.json();
       if (data.url) {
-        console.log("Uploaded image URL:", data.url);
-        
+        console.log("Uploaded image in coudinary URL:", data.url);
+        // save to database
+        const res = await uploadProfilePicture(data.url, id);
+        if(res) toast.success('Updated Profile Picture Successfully!');
+        else{
+          toast.error('Something went wront!');
+        }
+        setPreview(data.url);
+        setShowButton(false);
+
       } else {
-       
+       toast.error('Something went wront!');
       }
     } catch (err) {
       console.error(err);
-      
+      toast.error('Something went wront!');
     }
   };
 
@@ -73,7 +82,7 @@ const ProfilePhoto = ({ PI }: ProfilePhotoProps) => {
             />
           )}
         </div>
-        {preview ? (
+        {showButton ? (
           <div className=" flex gap-1  absolute right-2 bottom-3 bg-black bg-opacity-70 p-2 rounded-full hover:cursor-pointer">
             <Button onClick={handleDismiss} className="" variant="outline">
               Dismiss
