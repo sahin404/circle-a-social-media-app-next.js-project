@@ -6,34 +6,36 @@ import { Textarea } from "./ui/textarea";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import { ImageIcon, Loader2Icon, Send } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { postContent } from "@/actions/post.actions";
 import toast from "react-hot-toast";
 import { getUserByClerkId } from "@/actions/user.actions";
 
 type dbUser = {
-  profileImage:string
-}
+  profileImage: string;
+};
 
 const CreatePost = () => {
-  const [dbUser, setDbUser] = useState<dbUser|null>(null);
-  const {user} = useUser();
+  const [dbUser, setDbUser] = useState<dbUser | null>(null);
+  const { user } = useUser();
   const [content, setContent] = useState("");
   const [imageLink, setImageLink] = useState("");
   const [isPosting, setIsPosting] = useState(false);
   const [showImageUpload, setShowImageUpload] = useState(false);
+  const uploadRef = useRef<HTMLInputElement | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
-  useEffect(()=>{
-    if(!user) return;
-    const fetchUser = async()=>{
+  useEffect(() => {
+    if (!user) return;
+    const fetchUser = async () => {
       const fetchedUser = await getUserByClerkId(user?.id);
-      if(fetchedUser) setDbUser(fetchedUser);
-    }
+      if (fetchedUser) setDbUser(fetchedUser);
+    };
 
     fetchUser();
-  },[user])
+  }, [user]);
 
-  if(!user) return null;
+  if (!user) return null;
 
   //handle submit
   const handleSubmit = async () => {
@@ -53,6 +55,17 @@ const CreatePost = () => {
     } finally {
       setIsPosting(false);
     }
+  };
+
+  const handlePreview = (e: any) => {
+    const image = e.target.files?.[0];
+    if (!image) return;
+    const imageUrl = URL.createObjectURL(image);
+    setPreview(imageUrl);
+  };
+
+  const handleButtonClick = () => {
+    uploadRef.current?.click();
   };
 
   return (
@@ -80,9 +93,23 @@ const CreatePost = () => {
         </div>
 
         <Separator></Separator>
+
+        {/* Image Preview */}
+        {preview && (
+          <div className="p-2">
+            <img
+              src={preview}
+              alt="post image"
+              className="max-h-40 w-auto rounded-md"
+            />
+            <div className="my-2">
+              <Separator />
+            </div>
+          </div>
+        )}
+
         {/* Image and Button Section */}
         <div className="py-4 px-2 flex items-center justify-between">
-          {/* TODO image uploading function */}
           {/* Left Button */}
           <div>
             <Button
@@ -90,7 +117,7 @@ const CreatePost = () => {
               variant="ghost"
               size="sm"
               className="text-muted-foreground hover:text-primary"
-              onClick={() => setShowImageUpload(!showImageUpload)}
+              onClick={handleButtonClick}
               disabled={isPosting}
             >
               <ImageIcon className="size-4 mr-2" />
@@ -118,6 +145,14 @@ const CreatePost = () => {
             </Button>
           </div>
         </div>
+        {/* Hidden input */}
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          ref={uploadRef}
+          onChange={handlePreview}
+        />
       </Card>
     </div>
   );
