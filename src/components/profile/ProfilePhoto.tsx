@@ -16,7 +16,7 @@ const ProfilePhoto = ({ PI }: ProfilePhotoProps) => {
     uploadPhotoRef.current?.click();
   };
 
-  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     const image = e.target.files?.[0];
     if (image) {
       const previewUrl = URL.createObjectURL(image);
@@ -28,7 +28,9 @@ const ProfilePhoto = ({ PI }: ProfilePhotoProps) => {
     setPreview(null);
   };
 
-  const handleSave = () => {};
+  const handleSave = () => {
+
+  };
 
   return (
     <div className="flex flex-col items-center gap-3">
@@ -77,7 +79,7 @@ const ProfilePhoto = ({ PI }: ProfilePhotoProps) => {
           className="hidden"
           type="file"
           accept="image/*"
-          onChange={handleUpload}
+          onChange={handlePreview}
         />
       </div>
     </div>
