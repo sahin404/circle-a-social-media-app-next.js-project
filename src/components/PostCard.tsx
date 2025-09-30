@@ -86,11 +86,10 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
     setHasLiked(result);
   }, [loggedInUser, post.likes]);
 
-
   // Handle Delete Button
   const handleDelete = async () => {
     try {
-      if(!loggedInUser){
+      if (!loggedInUser) {
         openSignIn({});
         return;
       }
@@ -145,7 +144,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
   };
 
   return (
-    <div>
+    <div className="mb-5">
       <Card>
         <div className="p-6">
           {/* Header */}
@@ -225,8 +224,17 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
             <div className=" py-5">
               <span>{post.content}</span>
             </div>
-            {/* TODO: Image */}
-            <div></div>
+            {post.Image && (
+              <div className="my-5 flex justify-center">
+                <Image
+                  src={post.Image}
+                  alt="post image"
+                  width={800} 
+                  height={800}
+                  className="max-w-[400px] max-h-[400px] object-contain rounded-lg"
+                />
+              </div>
+            )}
           </div>
 
           {/* Footer */}
@@ -321,48 +329,48 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                   ))}
                 </div>
                 {/* Create Comment */}
-                {
-                  loggedInUser && <div className="flex flex-col mt-10">
-                  <div className="flex space-x-3">
-                    <div>
-                      <Image
-                        className="rounded-full"
-                        height={30}
-                        width={30}
-                        src={loggedInUser.profileImage || "/avatar.jpg"}
-                        alt="user Image"
-                      />
+                {loggedInUser && (
+                  <div className="flex flex-col mt-10">
+                    <div className="flex space-x-3">
+                      <div>
+                        <Image
+                          className="rounded-full"
+                          height={30}
+                          width={30}
+                          src={loggedInUser.profileImage || "/avatar.jpg"}
+                          alt="user Image"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <Textarea
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                          placeholder="Write your comment..."
+                          className="h-20 resize-none"
+                        />
+                      </div>
                     </div>
-                    <div className="w-full">
-                      <Textarea
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                        placeholder="Write your comment..."
-                        className="h-20 resize-none"
-                      />
+                    <div className="flex justify-end mt-3">
+                      <Button
+                        disabled={commenting || !comment}
+                        onClick={handleComment}
+                        variant="secondary"
+                      >
+                        {commenting ? (
+                          <div className="flex gap-2">
+                            <Loader2Icon className="animate-spin"></Loader2Icon>
+                            Submitting..
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2">
+                            <Send size={15} />
+                            Comment
+                          </div>
+                        )}
+                      </Button>
                     </div>
                   </div>
-                  <div className="flex justify-end mt-3">
-                    <Button
-                      disabled={commenting || !comment}
-                      onClick={handleComment}
-                      variant="secondary"
-                    >
-                      {commenting ? (
-                        <div className="flex gap-2">
-                          <Loader2Icon className="animate-spin"></Loader2Icon>
-                          Submitting..
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2">
-                          <Send size={15} />
-                          Comment
-                        </div>
-                      )}
-                    </Button>
-                  </div>
-                </div>
-                }
+                )}
               </div>
             </div>
           )}

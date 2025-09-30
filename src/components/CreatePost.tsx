@@ -19,9 +19,7 @@ const CreatePost = () => {
   const [dbUser, setDbUser] = useState<dbUser | null>(null);
   const { user } = useUser();
   const [content, setContent] = useState("");
-  const [imageLink, setImageLink] = useState("");
   const [isPosting, setIsPosting] = useState(false);
-  const [showImageUpload, setShowImageUpload] = useState(false);
   const uploadRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -41,12 +39,22 @@ const CreatePost = () => {
   const handleSubmit = async () => {
     setIsPosting(true);
     try {
-      const toPost = await postContent(content, imageLink);
+      // Cloudinary Special
+      const image = uploadRef.current?.files?.[0];
+      if (!image) return;
+      const formData = new FormData();
+      formData.append("file", image);
+      const res = await fetch("/api/upload/cloudinary", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      // Posted into Database
+      const toPost = await postContent(content, data.url);
       if (toPost?.success) {
         //posted Successsfully
         // so reset
         setContent("");
-        setImageLink("");
         toast.success("Successfully Created A Post!");
       }
     } catch (err) {
@@ -103,7 +111,12 @@ const CreatePost = () => {
               className="max-h-40 w-auto rounded-md"
             />
             <div className=" absolute left-1 top-1">
-              <button onClick={()=>setPreview(null)} className="bg-red-500 p-1 rounded-full"><X /></button>
+              <button
+                onClick={() => setPreview(null)}
+                className="bg-red-500 p-1 rounded-full"
+              >
+                <X />
+              </button>
             </div>
             <div className="my-2">
               <Separator />
@@ -130,7 +143,7 @@ const CreatePost = () => {
           {/* Right Button */}
           <div>
             <Button
-              disabled={(!content.trim() && !imageLink) || isPosting}
+              disabled={(!content.trim() && !preview) || isPosting}
               variant="secondary"
               onClick={handleSubmit}
             >
