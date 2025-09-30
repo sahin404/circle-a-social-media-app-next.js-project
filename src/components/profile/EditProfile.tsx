@@ -3,9 +3,12 @@
 import { Button } from "../ui/button"
 
 const EditProfile = () => {
+  const handleEdit = ()=>{
+    
+  }
   return (
     <div>
-      <Button variant={"outline"}>Edit Profile</Button>
+      <Button onClick={handleEdit} variant={"outline"}>Edit Profile</Button>
     </div>
   )
 }
