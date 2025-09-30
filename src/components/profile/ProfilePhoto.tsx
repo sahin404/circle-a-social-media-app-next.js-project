@@ -29,7 +29,9 @@ const ProfilePhoto = ({ PI }: ProfilePhotoProps) => {
   };
 
   const handleSave = () => {
-
+    const image = e.target.files?.[0];
+    if(!image) return;
+    
   };
 
   return (

@@ -2,6 +2,7 @@ import { getPosts } from "@/actions/post.actions";
 import CreatePost from "@/components/CreatePost";
 import PostCard from "@/components/PostCard";
 import Sidebar from "@/components/Sidebar";
+import UploadThing from "@/components/UploadThing";
 import YouMayFollow from "@/components/YouMayFollow";
 import { CameraOff } from "lucide-react";
 
@@ -37,6 +38,8 @@ export default async function Home() {
              
               }
             </div>
+          </div>
+          <div>
           </div>
         </div>
         <div className="sticky top-20 lg:block hidden lg:col-span-3 ">
