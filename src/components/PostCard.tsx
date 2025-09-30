@@ -169,8 +169,8 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                   <span>{post.author.name}</span>
                 </Link>
 
-                <div className="flex gap-3">
-                  <span className="text-gray-500 text-sm ">
+                <div className="flex gap-3 ">
+                  <span className="text-gray-500 text-sm hidden sm:block">
                     @{post.author.username}
                   </span>
 

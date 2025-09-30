@@ -103,9 +103,9 @@ const ProfilePhoto = ({ PI, id }: { PI: string; id: string }) => {
         ) : (
           <div
             onClick={handleIconClick}
-            className="absolute right-2 bottom-3 bg-black bg-opacity-70 p-2 rounded-full hover:cursor-pointer"
+            className="absolute right-1 bottom-1 md:right-2 md:bottom-3 bg-black bg-opacity-70 p-2 rounded-full hover:cursor-pointer"
           >
-            <ImageUp />
+            <ImageUp className="w-3 h-3 md:w-5 md:h-5" />
           </div>
         )}
 
