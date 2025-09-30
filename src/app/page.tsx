@@ -3,6 +3,7 @@ import CreatePost from "@/components/CreatePost";
 import PostCard from "@/components/PostCard";
 import Sidebar from "@/components/Sidebar";
 import YouMayFollow from "@/components/YouMayFollow";
+import { CameraOff } from "lucide-react";
 
 export default async function Home() {
   const posts = await getPosts();
@@ -19,7 +20,21 @@ export default async function Home() {
             {/* Posts Section */}
             <div className="px-5 space-y-5 lg:px-0">
               {
-                posts.map((post)=><PostCard key={post.id} post={post}></PostCard>)
+                posts.length === 0? 
+                <div className=" mt-8 flex flex-col gap-3 items-center justify-center">
+                  <div className="text-center">
+                    <CameraOff />
+                  </div>
+                  Not Posts Yet.
+                </div> 
+                : 
+                <div> 
+                  {
+                    posts.map((post)=><PostCard key={post.id} post={post}></PostCard>)
+                  }
+              </div>
+              
+             
               }
             </div>
           </div>

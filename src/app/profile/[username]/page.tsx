@@ -9,6 +9,7 @@ import ProfilePostSection from "@/components/profile/ProfilePostSection";
 import ProfileSidebar from "@/components/profile/ProfileSidebar";
 import { Card } from "@/components/ui/card";
 import { auth } from "@clerk/nextjs/server";
+import { CameraOff } from "lucide-react";
 import React from "react";
 
 export async function generateMetadata({ params }: { params: { username: string } }){
@@ -111,9 +112,21 @@ const page = async ({ params }: { params: { username: string } }) => {
           {/* Right: Posts */}
           <div className="lg:col-span-8">
             <Card className="p-6 space-y-6">
-              <ProfilePostSection
-                posts={userProfile.posts}
-              ></ProfilePostSection>
+              {
+                userProfile.posts.length===0? 
+                <div className=" mt-3 flex flex-col gap-3 items-center justify-center">
+                  <div className="text-center">
+                    <CameraOff />
+                  </div>
+                  Not Posts Yet.
+                </div> :
+                <div>
+                    <ProfilePostSection
+                      posts={userProfile.posts}
+                    ></ProfilePostSection>
+                </div>
+              }
+              
             </Card>
           </div>
         </div>
