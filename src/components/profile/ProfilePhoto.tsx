@@ -5,13 +5,14 @@ import { useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { uploadProfilePicture } from "@/actions/uploads.actions";
 import toast from "react-hot-toast";
+import { useTheme } from "next-themes";
 
 const ProfilePhoto = ({ PI, id }: { PI: string; id: string }) => {
   const uploadPhotoRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [showButton, setShowButton] = useState<boolean | null>(false);
   const [loadingButton, setLoadingButton] = useState<boolean | null>(false);
-
+  const {theme} = useTheme();
   const handleIconClick = () => {
     uploadPhotoRef.current?.click();
   };
@@ -105,7 +106,11 @@ const ProfilePhoto = ({ PI, id }: { PI: string; id: string }) => {
             onClick={handleIconClick}
             className="absolute right-1 bottom-1 md:right-2 md:bottom-3 bg-black bg-opacity-70 p-2 rounded-full hover:cursor-pointer"
           >
-            <ImageUp className="w-3 h-3 md:w-5 md:h-5" />
+            {
+              theme==='dark' ? <ImageUp className="w-3 h-3 md:w-5 md:h-5" /> :
+              <ImageUp className="w-3 h-3 text-white md:w-5 md:h-5" />
+            }
+            
           </div>
         )}
 
