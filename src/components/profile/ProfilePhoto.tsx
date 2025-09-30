@@ -28,10 +28,29 @@ const ProfilePhoto = ({ PI }: ProfilePhotoProps) => {
     setPreview(null);
   };
 
-  const handleSave = () => {
-    const image = e.target.files?.[0];
+  // Save to Cloudinary
+  const handleSave = async () => {
+    const image = uploadPhotoRef.current?.files?.[0];
     if(!image) return;
-    
+    const formData = new FormData();
+    formData.append("file", image);
+
+    try {
+      const res = await fetch("/api/upload/cloudinary", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.url) {
+        console.log("Uploaded image URL:", data.url);
+        
+      } else {
+       
+      }
+    } catch (err) {
+      console.error(err);
+      
+    }
   };
 
   return (
