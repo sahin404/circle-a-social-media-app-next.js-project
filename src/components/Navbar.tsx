@@ -4,21 +4,23 @@ import Logo from "@/components/Logo";
 import MobileNavbar from "./MobileNavbar";
 import { useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
+import { syncUser } from "@/actions/user.actions";
 
 
 const Navbar =() => {
   const { isLoaded ,user} = useUser();
+
   useEffect(()=>{
     if(!user) return;
-    const syncUser = async() =>{
-      await syncUser();
+    const doSyncUser = async() =>{
+      const temp = await syncUser();
     }
-  },[])
+    doSyncUser();
+  },[user])
 
   if (!isLoaded) {
     return null;
   }
-
 
   return (
     <nav className="sticky top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">

@@ -6,17 +6,32 @@ import { Textarea } from "./ui/textarea";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import { ImageIcon, Loader2Icon, Send } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { postContent } from "@/actions/post.actions";
 import toast from "react-hot-toast";
+import { getUserByClerkId } from "@/actions/user.actions";
+
+type dbUser = {
+  profileImage:string
+}
 
 const CreatePost = () => {
-  const { isLoaded, user } = useUser();
-
+  const [dbUser, setDbUser] = useState<dbUser|null>(null);
+  const {user} = useUser();
   const [content, setContent] = useState("");
   const [imageLink, setImageLink] = useState("");
   const [isPosting, setIsPosting] = useState(false);
   const [showImageUpload, setShowImageUpload] = useState(false);
+
+  useEffect(()=>{
+    if(!user) return;
+    const fetchUser = async()=>{
+      const fetchedUser = await getUserByClerkId(user?.id);
+      if(fetchedUser) setDbUser(fetchedUser);
+    }
+
+    fetchUser();
+  },[user])
 
   if(!user) return null;
 
@@ -50,7 +65,7 @@ const CreatePost = () => {
               className="rounded-full"
               width={30}
               height={30}
-              src={user?.imageUrl || "/avatar.jpg"}
+              src={dbUser?.profileImage || "/avatar.jpg"}
               alt="avatar"
             ></Image>
           </div>
