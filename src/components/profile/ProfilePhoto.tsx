@@ -1,16 +1,17 @@
 "use client";
-import { ImageUp } from "lucide-react";
+import { ImageUp, Loader2Icon } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { uploadProfilePicture } from "@/actions/uploads.actions";
 import toast from "react-hot-toast";
 
-
-const ProfilePhoto = ({ PI , id }: {PI:string , id:string}) => {
+const ProfilePhoto = ({ PI, id }: { PI: string; id: string }) => {
   const uploadPhotoRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [showButton, setShowButton] = useState<boolean | null>(false);
+  const [loadingButton, setLoadingButton] = useState<boolean | null>(false);
+
   const handleIconClick = () => {
     uploadPhotoRef.current?.click();
   };
@@ -29,14 +30,14 @@ const ProfilePhoto = ({ PI , id }: {PI:string , id:string}) => {
     setShowButton(false);
   };
 
-  // Save to Cloudinary
+  // Save to Cloudinary and Database
   const handleSave = async () => {
     const image = uploadPhotoRef.current?.files?.[0];
-    if(!image) return;
+    if (!image) return;
     const formData = new FormData();
     formData.append("file", image);
-
     try {
+      setLoadingButton(true);
       const res = await fetch("/api/upload/cloudinary", {
         method: "POST",
         body: formData,
@@ -46,19 +47,22 @@ const ProfilePhoto = ({ PI , id }: {PI:string , id:string}) => {
         console.log("Uploaded image in coudinary URL:", data.url);
         // save to database
         const res = await uploadProfilePicture(data.url, id);
-        if(res) toast.success('Updated Profile Picture Successfully!');
-        else{
-          toast.error('Something went wront!');
+        if (res) toast.success("Updated Profile Picture Successfully!");
+        else {
+          toast.error("Something went wront!");
         }
-        setPreview(data.url);
-        setShowButton(false);
-
       } else {
-       toast.error('Something went wront!');
+        toast.error("Something went wront!");
       }
-    } catch (err) {
+      setPreview(data.url);
+    } 
+    catch (err) {
       console.error(err);
-      toast.error('Something went wront!');
+      toast.error("Something went wront!");
+    } 
+    finally {
+      setLoadingButton(false);
+      setShowButton(false);
     }
   };
 
@@ -91,7 +95,9 @@ const ProfilePhoto = ({ PI , id }: {PI:string , id:string}) => {
               onClick={handleSave}
               className="bg-green-500 hover:bg-green-600"
             >
-              Save
+              {
+                loadingButton? <div> <Loader2Icon className="animate-spin"></Loader2Icon> </div>:<div>Save</div>
+              }
             </Button>
           </div>
         ) : (
