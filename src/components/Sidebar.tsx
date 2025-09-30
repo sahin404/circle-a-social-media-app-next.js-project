@@ -27,13 +27,15 @@ const Sidebar = async () => {
       <Card>
         <CardHeader className="flex items-center justify-center space-y-5">
           <Link href={`/profile/${dbUser.username}`}>
-          <Image
-            className="rounded-full"
-            width={100}
-            height={100}
-            src={dbUser?.profileImage || "avatar.jpg"}
-            alt="Profile Picture"
-          />
+            <div className="h-[100px] w-[100px] rounded-full overflow-hidden">
+              <Image
+                className="rounded-full"
+                width={100}
+                height={100}
+                src={dbUser?.profileImage || "avatar.jpg"}
+                alt="Profile Picture"
+              />
+            </div>
           </Link>
           <div className="space-y-1 text-center">
             <CardTitle>{dbUser.name}</CardTitle>
@@ -68,7 +70,7 @@ const Sidebar = async () => {
               <span>{dbUser.location || "No Location"}</span>
             </div>
             <div className="flex items-center gap-1">
-               <Link2 className="h-5" />
+              <Link2 className="h-5" />
               <span>{dbUser.website || "No Website"}</span>
             </div>
           </div>

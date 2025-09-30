@@ -60,7 +60,7 @@ const CreatePost = () => {
       <Card>
         {/* Avatar and TextArea Section */}
         <div className="flex gap-2 p-4 w-full">
-          <div>
+          <div className="h-[30px] w-[30px] rounded-full overflow-hidden">
             <Image
               className="rounded-full"
               width={30}

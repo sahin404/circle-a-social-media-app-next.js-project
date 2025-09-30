@@ -87,9 +87,9 @@ const DesktopNavbar = () => {
         <SignedIn>
           <div>
             <div className="relative">
-              <button onClick={() => setIsOpenLogout(!isOpenLogout)}>
+              <button className="h-[30px] w-[30px] rounded-full overflow-hidden" onClick={() => setIsOpenLogout(!isOpenLogout)}>
                 <Image
-                  className="rounded-full"
+                  className="rounded-full object-cover"
                   height={30}
                   width={30}
                   src={dbUser?.profileImage || "/avatar.jpg"}

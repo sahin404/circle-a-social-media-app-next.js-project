@@ -58,7 +58,7 @@ const NotificationsClient = () => {
                 {/* Image and Name and message */}
                 <div className="flex items-center">
                   {/* image */}
-                  <div className="mr-2">
+                  <div className="mr-2 h-[30px] w-[30px] rounded-full overflow-hidden">
                     <Image
                       height={30}
                       width={30}
