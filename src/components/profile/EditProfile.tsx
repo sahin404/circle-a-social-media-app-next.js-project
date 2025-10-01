@@ -1,23 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "../ui/button";
-
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
-import { useState } from "react";
-import { updateProfile } from "@/actions/user.actions";
-import toast from "react-hot-toast";
 import { Loader2Icon } from "lucide-react";
+import toast from "react-hot-toast";
+import { updateProfile } from "@/actions/user.actions";
 
-type userProfile = {
+type UserProfile = {
   id: string;
   name: string;
   bio: string;
@@ -25,24 +23,19 @@ type userProfile = {
   location: string;
 };
 
-const EditProfile = ({ userProfile }: { userProfile: userProfile }) => {
+const EditProfile = ({ userProfile }: { userProfile: UserProfile }) => {
   const [formData, setFormData] = useState({
     name: userProfile?.name || "",
     bio: userProfile?.bio || "",
     website: userProfile?.website || "",
     location: userProfile?.location || "",
   });
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-    // console.log(formData);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async () => {
@@ -50,96 +43,92 @@ const EditProfile = ({ userProfile }: { userProfile: userProfile }) => {
     try {
       const res = await updateProfile(formData, userProfile.id);
       if (res.success) {
-        toast.success("Successfully Updated the information.");
+        toast.success("Profile updated successfully!");
+        setOpen(false); // Auto close modal
+      } else {
+        toast.error("Failed to update profile.");
       }
-      setOpen(false);
     } catch (err) {
-      console.log("An error occured to information update", err);
-      toast.error("Something went Wrong!");
+      console.error(err);
+      toast.error("Something went wrong!");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleEdit = () => {};
   return (
-    <div>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button onClick={handleEdit} variant={"outline"}>
-            Edit Profile
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="text-center">Edit Profile</DialogTitle>
-            <DialogDescription className="text-center">
-              Update Your Profile Information Below
-            </DialogDescription>
-          </DialogHeader>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <span>
+          <Button variant="outline">Edit Profile</Button>
+        </span>
+      </DialogTrigger>
 
-          <div className="space-y-2">
-            {/* name */}
-            <div className="space-y-2">
-              <label>Name</label>
-              <Input
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Write Your Name"
-              ></Input>
-            </div>
-            {/* bio */}
-            <div className="space-y-2">
-              <label>Bio</label>
-              <Input
-                name="bio"
-                value={formData.bio}
-                onChange={handleChange}
-                placeholder="Write Your Biodata"
-              ></Input>
-            </div>
-            {/* website */}
-            <div className="space-y-2">
-              <label>Website</label>
-              <Input
-                name="website"
-                value={formData.website}
-                onChange={handleChange}
-                placeholder="Write Your Website Link"
-              ></Input>
-            </div>
-            {/* Location */}
-            <div className="space-y-2">
-              <label>Location</label>
-              <Input
-                name="location"
-                value={formData.location}
-                onChange={handleChange}
-                placeholder="Write Your location address"
-              ></Input>
-            </div>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="text-center">Edit Profile</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4 mt-2">
+          <div>
+            <label>Name</label>
+            <Input
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Write Your Name"
+            />
           </div>
-          <DialogFooter className="mt-6">
-            <Button
-              disabled={isLoading}
-              onClick={handleSubmit}
-              type="submit"
-              className="w-full"
-            >
-              {isLoading ? (
-                <div className="flex items-center gap-2">
-                  Submitting...{" "}
-                  <Loader2Icon className="animate-spin"></Loader2Icon>{" "}
-                </div>
-              ) : (
-                <div>Submit</div>
-              )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
+
+          <div>
+            <label>Bio</label>
+            <Input
+              name="bio"
+              value={formData.bio}
+              onChange={handleChange}
+              placeholder="Write Your Bio"
+            />
+          </div>
+
+          <div>
+            <label>Website</label>
+            <Input
+              name="website"
+              value={formData.website}
+              onChange={handleChange}
+              placeholder="Write Your Website"
+            />
+          </div>
+
+          <div>
+            <label>Location</label>
+            <Input
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              placeholder="Write Your Location"
+            />
+          </div>
+        </div>
+
+        <DialogFooter className="mt-4">
+          <Button
+            onClick={handleSubmit}
+            disabled={isLoading}
+            className="w-full"
+          >
+            {isLoading ? (
+              <div className="flex items-center gap-2 justify-center">
+                Submitting...
+                <Loader2Icon className="animate-spin w-4 h-4" />
+              </div>
+            ) : (
+              "Submit"
+            )}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

@@ -55,6 +55,7 @@ const CreatePost = () => {
         //posted Successsfully
         // so reset
         setContent("");
+        setPreview(null);
         toast.success("Successfully Created A Post!");
       }
     } catch (err) {
@@ -111,12 +112,12 @@ const CreatePost = () => {
               className="max-h-40 w-auto rounded-md"
             />
             <div className=" absolute left-1 top-1">
-              <button
+              <div
                 onClick={() => setPreview(null)}
-                className="bg-red-500 p-1 rounded-full"
+                className="bg-red-500 p-1 rounded-full cursor-pointer"
               >
                 <X />
-              </button>
+              </div>
             </div>
             <div className="my-2">
               <Separator />

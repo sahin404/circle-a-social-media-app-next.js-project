@@ -186,13 +186,12 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
               {loggedInUser?.id === post.author.id ? (
                 <div>
                   <AlertDialog>
-                    <AlertDialogTrigger>
-                      <button>
-                        <div className="text-gray-500">
+                      <AlertDialogTrigger asChild>
+                        <div className="text-gray-500 cursor-pointer">
                           <Trash height={18} />
                         </div>
-                      </button>
-                    </AlertDialogTrigger>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>...</AlertDialogContent>
                     <AlertDialogContent>
                       <AlertDialogHeader>
                         <AlertDialogTitle>
@@ -229,7 +228,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                 <Image
                   src={post.Image}
                   alt="post image"
-                  width={800} 
+                  width={800}
                   height={800}
                   className="max-w-[400px] max-h-[400px] object-contain rounded-lg"
                 />
