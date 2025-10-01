@@ -2,7 +2,6 @@ import { getPosts } from "@/actions/post.actions";
 import CreatePost from "@/components/CreatePost";
 import PostCard from "@/components/PostCard";
 import Sidebar from "@/components/Sidebar";
-import UploadThing from "@/components/UploadThing";
 import YouMayFollow from "@/components/YouMayFollow";
 import { CameraOff } from "lucide-react";
 

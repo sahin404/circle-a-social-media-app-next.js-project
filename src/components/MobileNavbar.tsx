@@ -21,10 +21,15 @@ import ModeToggole from "@/components/ModeToggole";
 import Link from "next/link";
 import { getUserByClerkId } from "@/actions/user.actions";
 
+type dbUser = {
+  username: string | null;
+  profileImage: string | null;
+};
+
 function MobileNavbar() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { user } = useUser();
-  const [dbUser, setDbUser] = useState([]);
+  const [dbUser, setDbUser] = useState<dbUser | null>(null);
   useEffect(() => {
     if (!user?.id) return; // wait until user exists
 
@@ -80,7 +85,7 @@ function MobileNavbar() {
                   className="flex items-center gap-3 justify-start"
                   asChild
                 >
-                  <Link href={`/profile/${dbUser.username}`}>
+                  <Link href={`/profile/${dbUser?.username}`}>
                     <UserIcon className="w-4 h-4" />
                     Profile
                   </Link>

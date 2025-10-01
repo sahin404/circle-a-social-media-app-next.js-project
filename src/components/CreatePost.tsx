@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import { getUserByClerkId } from "@/actions/user.actions";
 
 type dbUser = {
-  profileImage: string;
+  profileImage: string | null;
 };
 
 const CreatePost = () => {

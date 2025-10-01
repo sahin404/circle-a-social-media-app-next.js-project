@@ -13,7 +13,7 @@ const Navbar =() => {
   useEffect(()=>{
     if(!user) return;
     const doSyncUser = async() =>{
-      const temp = await syncUser();
+       await syncUser();
     }
     doSyncUser();
   },[user])

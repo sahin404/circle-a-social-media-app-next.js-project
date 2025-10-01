@@ -34,9 +34,9 @@ import Link from "next/link";
 type PostWithAuthor = Post & {
   author: {
     id: string;
-    name: string;
-    username: string;
-    profileImage: string;
+    name: string | null;
+    username: string | null;
+    profileImage: string |null;
   };
   _count: {
     likes: number;
@@ -48,9 +48,9 @@ type PostWithAuthor = Post & {
     content: string;
     createdAt: Date;
     author: {
-      name: string;
-      username: string;
-      profileImage: string;
+      name: string | null;
+      username: string | null;
+      profileImage: string |null;
     };
   }[];
 };

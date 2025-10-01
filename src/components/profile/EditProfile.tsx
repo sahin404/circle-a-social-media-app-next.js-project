@@ -14,13 +14,19 @@ import { Input } from "../ui/input";
 import { Loader2Icon } from "lucide-react";
 import toast from "react-hot-toast";
 import { updateProfile } from "@/actions/user.actions";
+import { Post } from "@/generated/prisma";
 
 type UserProfile = {
   id: string;
-  name: string;
-  bio: string;
-  website: string;
-  location: string;
+  name: string | null; // null allow করো
+  bio?: string | null;
+  profileImage?: string | null;
+  coverImage?: string | null;
+  email?: string | null;
+  location?: string | null;
+  website?: string | null;
+  createdAt: Date | string;
+  posts: Post[];
 };
 
 const EditProfile = ({ userProfile }: { userProfile: UserProfile }) => {

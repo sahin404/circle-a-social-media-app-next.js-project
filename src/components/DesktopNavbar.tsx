@@ -15,8 +15,8 @@ import { getUserByClerkId } from "@/actions/user.actions";
 import Image from "next/image";
 
 type dbUser = {
-  username: string;
-  profileImage: string;
+  username: string | null;
+  profileImage: string | null;
 };
 
 const DesktopNavbar = () => {

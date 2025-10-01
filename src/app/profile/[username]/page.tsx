@@ -8,6 +8,7 @@ import ProfilePhoto from "@/components/profile/ProfilePhoto";
 import ProfilePostSection from "@/components/profile/ProfilePostSection";
 import ProfileSidebar from "@/components/profile/ProfileSidebar";
 import { Card } from "@/components/ui/card";
+import { Post } from "@/generated/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { CameraOff } from "lucide-react";
 import React from "react";
@@ -39,9 +40,21 @@ export async function generateMetadata({ params }: { params: { username: string 
   }
 }
 
+type UserProfile = {
+  id: string;
+  name: string | null; // null allow করো
+  bio?: string | null;
+  profileImage?: string | null;
+  coverImage?: string | null;
+  email?: string | null;
+  location?: string | null;
+  website?: string | null;
+  createdAt: Date | string;
+  posts: Post[];
+};
 
 const page = async ({ params }: { params: { username: string } }) => {
-  const userProfile = await getUserProfileInfo(params.username);
+  const userProfile = await getUserProfileInfo(params.username) as UserProfile;
   if (!userProfile || !userProfile.posts) return <CustomUnauthorized></CustomUnauthorized>
 
   const {userId} = await auth()
