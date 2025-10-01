@@ -94,7 +94,7 @@ const page = async ({ params }: { params: { username: string } }) => {
               </span>
               <span>{userProfile?.bio}</span>
             </div>
-            <div className="ml-64 -mt-20">
+            <div className="ml-[355px] -mt-20">
               {loggedInUser.id===userProfile.id?<EditProfile userProfile={userProfile}></EditProfile>:<FollowButton userProfileId = {userProfile.id || ""}></FollowButton>}
             </div>
           </div>

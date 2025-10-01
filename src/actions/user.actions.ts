@@ -25,9 +25,13 @@ export const syncUser = async () => {
       data: {
         clerkId: userId,
         name: `${user.firstName || ""} ${user.lastName || ""}`,
-        username: `${ user.username ? user.username : user.emailAddresses[0].emailAddress.split("@")[0]}`,
-        profileImage: '/avatar.jpg',
-        coverImage: '/avatar.jpg',
+        username: `${
+          user.username
+            ? user.username
+            : user.emailAddresses[0].emailAddress.split("@")[0]
+        }`,
+        profileImage: "/avatar.jpg",
+        coverImage: "/avatar.jpg",
         email: user.emailAddresses[0].emailAddress,
       },
     });
@@ -164,8 +168,37 @@ export const toggoleFollow = async (targetId: string) => {
       });
     }
     revalidatePath("/");
-    revalidatePath('/profile')
+    revalidatePath("/profile");
   } catch (err) {
     console.log("An error occured to toggole follow", err);
+  }
+};
+
+// Update Profile
+export const updateProfile = async (
+  formData: {
+    name?: string;
+    bio?: string;
+    website?: string;
+    location?: string;
+  },
+  userId: string
+) => {
+  try {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name: formData.name,
+        bio: formData.bio,
+        website: formData.website,
+        location: formData.location,
+      },
+    });
+    return {success:true};
+  } catch (err) {
+    console.log("An err occured to update profile!!!!", err);
+    return { success: false };
   }
 };
