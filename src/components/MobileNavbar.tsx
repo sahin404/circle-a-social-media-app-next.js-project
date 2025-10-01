@@ -43,7 +43,7 @@ function MobileNavbar() {
   }, [user?.id]);
 
   return (
-    <div className="flex md:hidden items-center space-x-2">
+    <div className="flex lg:hidden items-center space-x-2">
       <ModeToggole></ModeToggole>
 
       <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>

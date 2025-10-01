@@ -4,6 +4,7 @@ import NotificationSkeleton from "@/components/NotificationSkeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 type NotificationType = {
@@ -59,6 +60,7 @@ const NotificationsClient = () => {
                 <div className="flex items-center">
                   {/* image */}
                   <div className="mr-2 h-[30px] w-[30px] rounded-full overflow-hidden">
+                    <Link href={`/profile/${notification.creator.username}`}>
                     <Image
                       height={30}
                       width={30}
@@ -66,10 +68,12 @@ const NotificationsClient = () => {
                       src={notification.creator.profileImage || "/avatar.jpg"}
                       alt={notification.creator.username}
                     ></Image>
+                    </Link>
                   </div>
                   {/* name */}
                   <div className="mr-1">
-                    <span>{notification.creator.name}</span>
+                    <Link href={`/profile/${notification.creator.username}`}><span>{notification.creator.name}</span></Link>
+                    
                   </div>
                   {/* Dedicated Message */}
                   <div>

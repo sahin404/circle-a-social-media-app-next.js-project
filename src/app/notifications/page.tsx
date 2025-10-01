@@ -8,9 +8,11 @@ export const metadata:Metadata={
   title:'Circle | Notifications'
 }
 
+
+
 const page = async() => {
-  const dbUser  = await getUserIdFromDb();
-  if(!dbUser) return <CustomUnauthorized></CustomUnauthorized>
+  const dbUserId  = await getUserIdFromDb();
+  if(!dbUserId) return <CustomUnauthorized></CustomUnauthorized>
   return (
     <div className="grid grid-cols-12 gap-6">
       <div className="hidden lg:block lg:col-span-3">

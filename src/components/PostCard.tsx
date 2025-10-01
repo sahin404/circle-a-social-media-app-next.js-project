@@ -36,7 +36,7 @@ type PostWithAuthor = Post & {
     id: string;
     name: string | null;
     username: string | null;
-    profileImage: string |null;
+    profileImage: string | null;
   };
   _count: {
     likes: number;
@@ -50,7 +50,7 @@ type PostWithAuthor = Post & {
     author: {
       name: string | null;
       username: string | null;
-      profileImage: string |null;
+      profileImage: string | null;
     };
   }[];
 };
@@ -186,12 +186,12 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
               {loggedInUser?.id === post.author.id ? (
                 <div>
                   <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <div className="text-gray-500 cursor-pointer">
-                          <Trash height={18} />
-                        </div>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>...</AlertDialogContent>
+                    <AlertDialogTrigger asChild>
+                      <div className="text-gray-500 cursor-pointer">
+                        <Trash height={18} />
+                      </div>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>...</AlertDialogContent>
                     <AlertDialogContent>
                       <AlertDialogHeader>
                         <AlertDialogTitle>
@@ -224,13 +224,13 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
               <span>{post.content}</span>
             </div>
             {post.Image && (
-              <div className="my-5 flex justify-center">
+              <div className="my-2 flex justify-center">
                 <Image
                   src={post.Image}
                   alt="post image"
                   width={800}
                   height={800}
-                  className="max-w-[400px] max-h-[400px] object-contain rounded-lg"
+                  className=" md:max-w-[400px] md:max-h-[400px] object-contain rounded-lg"
                 />
               </div>
             )}
@@ -243,13 +243,13 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                 {theme === "dark" ? (
                   <Heart
                     stroke={likeFill ? "red" : "white"}
-                    fill={`${likeFill ? "red" : "black"}`}
+                    fill={likeFill ? "red" : "black"}
                     height={18}
                   />
                 ) : (
                   <Heart
                     stroke={likeFill ? "red" : "black"}
-                    fill={`${likeFill ? "red" : "white"}`}
+                    fill={likeFill ? "red" : "white"} 
                     height={18}
                   />
                 )}
