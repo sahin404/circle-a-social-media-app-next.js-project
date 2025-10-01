@@ -31,8 +31,8 @@ const NotificationsClient = () => {
     const fetchNotifications = async () => {
       try {
         const notification = await getNotifications();
-        if (notification.success)
-          setNotifications(notification.notifications ?? []);
+        if (notification?.success)
+          setNotifications(notification?.notifications ?? []);
       } catch (err) {
         console.error("Failed to load notifications:", err);
       } finally {
