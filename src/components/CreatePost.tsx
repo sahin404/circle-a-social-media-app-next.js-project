@@ -35,13 +35,19 @@ const CreatePost = () => {
 
   if (!user) return null;
 
-  //handle submit
   const handleSubmit = async () => {
-    setIsPosting(true);
-    try {
-      // Cloudinary Special
-      const image = uploadRef.current?.files?.[0];
-      if (!image) return;
+  if (!content.trim() && !uploadRef.current?.files?.[0]) {
+    toast.error("Post cannot be empty!");
+    return;
+  }
+
+  setIsPosting(true);
+
+  try {
+    let imageUrl: string | null = null;
+
+    const image = uploadRef.current?.files?.[0];
+    if (image) {
       const formData = new FormData();
       formData.append("file", image);
       const res = await fetch("/api/upload/cloudinary", {
@@ -49,22 +55,24 @@ const CreatePost = () => {
         body: formData,
       });
       const data = await res.json();
-      // Posted into Database
-      const toPost = await postContent(content, data.url);
-      if (toPost?.success) {
-        //posted Successsfully
-        // so reset
-        setContent("");
-        setPreview(null);
-        toast.success("Successfully Created A Post!");
-      }
-    } catch (err) {
-      toast.error("An Error occured to create post!");
-      console.log("An error ocurred to create post!", err);
-    } finally {
-      setIsPosting(false);
+      imageUrl = data.url;
     }
-  };
+
+    // Post into database (works with or without image)
+    const toPost = await postContent(content, imageUrl || "");
+    if (toPost?.success) {
+      setContent("");
+      setPreview(null);
+      toast.success("Successfully Created A Post!");
+    }
+  } catch (err) {
+    toast.error("An error occurred while creating the post!");
+    console.log("Error creating post:", err);
+  } finally {
+    setIsPosting(false);
+  }
+};
+
 
   const handlePreview = (e: any) => {
     const image = e.target.files?.[0];

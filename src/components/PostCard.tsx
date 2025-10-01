@@ -287,7 +287,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                         <div className="flex gap-3">
                           {/* Image */}
                           <Link href={`/profile/${comment.author.username}`}>
-                            <div className="h-[25px] w-[250px] rounded-full overflow-hidden">
+                            <div className="h-[25px] w-[25px] rounded-full overflow-hidden">
                               <Image
                                 className="rounded-full"
                                 alt="Profile Picture"
@@ -331,7 +331,7 @@ const PostCard = ({ post }: { post: PostWithAuthor }) => {
                 {loggedInUser && (
                   <div className="flex flex-col mt-10">
                     <div className="flex space-x-3">
-                      <div>
+                      <div className="h-[30px] w-[30px] rounded-full overflow-hidden">
                         <Image
                           className="rounded-full"
                           height={30}
