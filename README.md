@@ -1,4 +1,4 @@
-# Circle
+# Circle - A Social Media App
 
 **Circle** is a modern social media application I built using **Next.js 14** and **TypeScript**. It's based on a **serverless architecture**, connecting a **PostgreSQL** database via **Prisma ORM** and using **Clerk** for authentication. For UI design, I used **Tailwind CSS** and **shadcn/ui**, keeping the interface **simple, responsive, and modern**.
 
