@@ -102,7 +102,7 @@ const NotificationsClient = () => {
                   )}
                   {/* Post */}
                   {(notification.type === "LIKE" ||
-                    notification.type === "Comment") &&
+                    notification.type === "COMMENT") &&
                     notification.post && (
                       <div className="border rounded-md p-2 mb-2 bg-gray-600 ml-7">
                         {notification.post.content && (
