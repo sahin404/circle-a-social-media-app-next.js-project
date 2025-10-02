@@ -5,11 +5,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import Link from "next/link";
+import { formatDistanceToNow } from "date-fns";
 import React, { useEffect, useState } from "react";
 
 type NotificationType = {
-  id: string;
-  type: string;
+  id: string,
+  type: string,
+  createdAt:Date,
   post: {
     content: string | null;
     Image: string | null;
@@ -83,15 +85,17 @@ const NotificationsClient = () => {
                     {notification.type === "FOLLOW" && (
                       <span>starting followed you.</span>
                     )}
-                    {notification.type === "Comment" && (
+                    {notification.type === "COMMENT" && (
                       <span>comment to your post.</span>
                     )}
+                   
                   </div>
+                 <div className="ml-5 text-xs text-gray-600">{formatDistanceToNow(notification.createdAt)} </div>
                 </div>
                 {/* comment and post */}
                 <div>
                   {/* Comment Content */}
-                  {notification.type === "Comment" && notification.comment && (
+                  {notification.type === "COMMENT" && notification.comment && (
                     <div className="text-sm p-2 ml-2">
                       {notification.comment.content}
                     </div>
