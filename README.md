@@ -18,14 +18,17 @@
 
 ## Some Screenshots
 
-![Home Page](/home.png)  
+### Home Page
+![Home Page](https://github.com/sahin404/circle-a-social-media-app-next.js-project/blob/main/public/homepage.png?raw=true)  
 *Home Page of Circle*  
 
-![Profile Page](/profile.png)  
+### Profile Page
+![Profile Page](https://github.com/sahin404/circle-a-social-media-app-next.js-project/blob/main/public/profile.png?raw=true)  
 *User Profile Page*  
 
-![Notifcation Page](/notification.png)  
-*Notification page*  
+### Notification Page
+![Notification Page](https://github.com/sahin404/circle-a-social-media-app-next.js-project/blob/main/public/notification.png?raw=true)  
+*Notification Page*  
 
 ---
 
