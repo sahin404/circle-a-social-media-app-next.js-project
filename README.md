@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Circle - A Social Media App
+
+**Circle** is a modern social media application I built using **Next.js 14** and **TypeScript**. It's based on a **serverless architecture**, connecting a **PostgreSQL** database via **Prisma ORM** and using **Clerk** for authentication. For UI design, I used **Tailwind CSS** and **shadcn/ui**, keeping the interface **simple, responsive, and modern**.
+
+---
+
+## Technologies Used
+
+- **TypeScript**  
+- **Next.js 14**  
+- **Tailwind CSS**  
+- **Prisma ORM**  
+- **shadcn/ui**  
+- **Clerk Authentication**  
+- **PostgreSQL (via Neon)**  
+
+---
+
+## Some Screenshots
+
+### Home Page
+![Home Page](https://github.com/sahin404/circle-a-social-media-app-next.js-project/blob/main/public/homepage.png?raw=true)  
+*Home Page of Circle*  
+
+### Profile Page
+![Profile Page](https://github.com/sahin404/circle-a-social-media-app-next.js-project/blob/main/public/profile.png?raw=true)  
+*User Profile Page*  
+
+### Notification Page
+![Notification Page](https://github.com/sahin404/circle-a-social-media-app-next.js-project/blob/main/public/notification.png?raw=true)  
+*Notification Page*  
+
+---
+
+### For Live Experience please go to the live link: https://circle-social-media-app.vercel.app/
+
+## Features of the Platform
+
+- User authentication with **Clerk**  
+- Create, read, update, and delete posts  
+- Like and comment on posts
+- Follow or Unfollow Users
+- Edit User Profile All information
+- Edit Profile Picture and Cover Photo
+- Fully Responsive design for all devices like **desktop, Mobile, Tablet**  
+- Cool UI using **Tailwind CSS** and **shadcn/ui**  
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Clone the repository**  
+   ```bash
+   git clone https://github.com/yourusername/circle.git
+   cd circle
+   npm install
+   npm run dev
+   ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
