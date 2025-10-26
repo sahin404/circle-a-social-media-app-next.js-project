@@ -7,12 +7,20 @@ import { uploadProfilePicture } from "@/actions/uploads.actions";
 import toast from "react-hot-toast";
 import { useTheme } from "next-themes";
 
-const ProfilePhoto = ({ PI, id }: { PI: string; id: string }) => {
+const ProfilePhoto = ({
+  loggedInUserId,
+  profileUserId,
+  PI,
+}: {
+  loggedInUserId: string;
+  profileUserId: string;
+  PI: string;
+}) => {
   const uploadPhotoRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [showButton, setShowButton] = useState<boolean | null>(false);
   const [loadingButton, setLoadingButton] = useState<boolean | null>(false);
-  const {theme} = useTheme();
+  const { theme } = useTheme();
   const handleIconClick = () => {
     uploadPhotoRef.current?.click();
   };
@@ -47,7 +55,7 @@ const ProfilePhoto = ({ PI, id }: { PI: string; id: string }) => {
       if (data.url) {
         console.log("Uploaded image in coudinary URL:", data.url);
         // save to database
-        const res = await uploadProfilePicture(data.url, id);
+        const res = await uploadProfilePicture(data.url, profileUserId);
         if (res) toast.success("Updated Profile Picture Successfully!");
         else {
           toast.error("Something went wront!");
@@ -56,12 +64,10 @@ const ProfilePhoto = ({ PI, id }: { PI: string; id: string }) => {
         toast.error("Something went wront!");
       }
       setPreview(data.url);
-    } 
-    catch (err) {
+    } catch (err) {
       console.error(err);
       toast.error("Something went wront!");
-    } 
-    finally {
+    } finally {
       setLoadingButton(false);
       setShowButton(false);
     }
@@ -96,22 +102,29 @@ const ProfilePhoto = ({ PI, id }: { PI: string; id: string }) => {
               onClick={handleSave}
               className="bg-green-500 hover:bg-green-600"
             >
-              {
-                loadingButton? <div> <Loader2Icon className="animate-spin"></Loader2Icon> </div>:<div>Save</div>
-              }
+              {loadingButton ? (
+                <div>
+                  {" "}
+                  <Loader2Icon className="animate-spin"></Loader2Icon>{" "}
+                </div>
+              ) : (
+                <div>Save</div>
+              )}
             </Button>
           </div>
-        ) : (
+        ) : loggedInUserId === profileUserId ? (
           <div
             onClick={handleIconClick}
             className="absolute right-1 bottom-1 md:right-2 md:bottom-3 bg-black bg-opacity-70 p-2 rounded-full hover:cursor-pointer"
           >
-            {
-              theme==='dark' ? <ImageUp className="w-3 h-3 md:w-5 md:h-5" /> :
+            {theme === "dark" ? (
+              <ImageUp className="w-3 h-3 md:w-5 md:h-5" />
+            ) : (
               <ImageUp className="w-3 h-3 text-white md:w-5 md:h-5" />
-            }
-            
+            )}
           </div>
+        ) : (
+          ""
         )}
 
         {/* Hidden File Input */}

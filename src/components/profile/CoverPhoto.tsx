@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 import { uploadCoverPicture } from "@/actions/uploads.actions";
 
-const CoverPhoto = ({ CI, id }: { CI: string, id:string }) => {
+const CoverPhoto = ({ CI, loggedInUserId, profileUserId }: { CI: string, loggedInUserId:string, profileUserId:string }) => {
   const uploadRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [showButton, setShowButton] = useState<boolean | null>(false);
@@ -45,7 +45,7 @@ const CoverPhoto = ({ CI, id }: { CI: string, id:string }) => {
       if (data.url) {
         console.log("Uploaded image in coudinary URL:", data.url);
         // save to database
-        const res = await uploadCoverPicture(data.url, id);
+        const res = await uploadCoverPicture(data.url, profileUserId);
         if (res) toast.success("Updated Cover Picture Successfully!");
         else {
           toast.error("Something went wront!");
@@ -90,7 +90,7 @@ const CoverPhoto = ({ CI, id }: { CI: string, id:string }) => {
                 }
                </Button>
             </div>
-          ) : (
+          ) : loggedInUserId === profileUserId && (
             <div>
               <button
                 onClick={handleButtonClick}
